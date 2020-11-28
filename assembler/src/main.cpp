@@ -37,6 +37,10 @@ int main(int argc, char** argv) {
 
     string asmcode;
     while (getline(infile, asmcode)) {
+        asmcode = strip(asmcode, " ");
+        if (asmcode == "" or asmcode[0] == '#') {
+            continue;
+        }
         cout << asmcode << " -> " << asmcode_to_bits(asmcode) << endl;
     }
     return 0;
