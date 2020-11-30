@@ -47,7 +47,7 @@ vector<string> tokenize(const string asmcode) {
 
 string asmcode_to_bits(const string asmcode) { return asmcode; }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     std::vector<std::string> args(argv, argv + argc);
 
     if (argc != 2) {
