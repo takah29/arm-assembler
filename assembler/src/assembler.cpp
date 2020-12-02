@@ -1,9 +1,19 @@
-#include "assembly.hpp"
+#include "assembler.hpp"
 
 #include <string>
 #include <vector>
 
-std::vector<std::string> tokenize(const std::string asmcode) {
+Assembler::Assembler() {opcode_table = {{}}}
+Assembler::~Assembler() {}
+
+std::string Assembler::convert(const std::string asmcode) {
+    auto tokens = tokenize(asmcode);
+    std::string opcode = tokens[0];
+
+    return asmcode;
+}
+
+std::vector<std::string> Assembler::tokenize(const std::string asmcode) {
     std::vector<std::string> tokens{};
     size_t left_pos = 0, right_pos = 0;
     bool in_brackets = false;
@@ -39,10 +49,4 @@ std::vector<std::string> tokenize(const std::string asmcode) {
     tokens.push_back(asmcode.substr(left_pos, asmcode.size() - left_pos + 1));
 
     return tokens;
-}
-
-std::string asmcode_to_bits(const std::string asmcode) {
-    auto tokens = tokenize(asmcode);
-
-    return asmcode;
 }
