@@ -3,7 +3,14 @@
 #include <string>
 #include <vector>
 
-Assembler::Assembler() {opcode_table = {{}}}
+Assembler::Assembler() {
+    data_processing_instructions = {{"AND", "EOR", "SUB", "RSB", "ADD", "ADC", "SBC",
+                                     "RSC", "TST", "TEQ", "CMP", "CMN", "ORR", "MOV",
+                                     "LSL", "LSR", "ASR", "RRX", "ROR", "BIC", "MVN",
+                                     "MUL", "MLA", "UMU", "UML", "SMU", "SML"}};
+    memory_instructions = {{"STR", "LDR"}};
+    branch_instructions = {{"B", "BL"}};
+}
 Assembler::~Assembler() {}
 
 std::string Assembler::convert(const std::string asmcode) {
