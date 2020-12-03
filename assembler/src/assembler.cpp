@@ -14,10 +14,63 @@ std::string Assembler::convert(const std::string asmcode) {
     auto opcode_ = opcode.substr(0, 3);
     std::vector<std::string> operands(tokens.begin() + 1, tokens.end());
 
+    uint32_t machine_code;
     if (opcode_ == "and") {
-        _and(opcode, operands);
+        machine_code = _and(opcode, operands);
     } else if (opcode_ == "eor") {
-        _and(opcode_, operands);
+        machine_code = _eor(opcode, operands);
+    } else if (opcode_ == "sub") {
+        machine_code = _sub(opcode, operands);
+    } else if (opcode_ == "rsb") {
+        machine_code = _rsb(opcode, operands);
+    } else if (opcode_ == "add") {
+        machine_code = _add(opcode, operands);
+    } else if (opcode_ == "adc") {
+        machine_code = _adc(opcode, operands);
+    } else if (opcode_ == "sbc") {
+        machine_code = _sbc(opcode, operands);
+    } else if (opcode_ == "rsc") {
+        machine_code = _rsc(opcode, operands);
+    } else if (opcode_ == "tst") {
+        machine_code = _tst(opcode, operands);
+    } else if (opcode_ == "teq") {
+        machine_code = _teq(opcode, operands);
+    } else if (opcode_ == "cmp") {
+        machine_code = _cmp(opcode, operands);
+    } else if (opcode_ == "cmn") {
+        machine_code = _cmn(opcode, operands);
+    } else if (opcode_ == "orr") {
+        machine_code = _orr(opcode, operands);
+    } else if (opcode_ == "mov") {
+        machine_code = _mov(opcode, operands);
+    } else if (opcode_ == "lsl") {
+        machine_code = _lsl(opcode, operands);
+    } else if (opcode_ == "lsr") {
+        machine_code = _lsr(opcode, operands);
+    } else if (opcode_ == "asr") {
+        machine_code = _asr(opcode, operands);
+    } else if (opcode_ == "rrx") {
+        machine_code = _rrx(opcode, operands);
+    } else if (opcode_ == "ror") {
+        machine_code = _ror(opcode, operands);
+    } else if (opcode_ == "bic") {
+        machine_code = _bic(opcode, operands);
+    } else if (opcode_ == "mvn") {
+        machine_code = _mvn(opcode, operands);
+    } else if (opcode_ == "mul" or opcode_ == "umu" or opcode_ == "smu") {
+        machine_code = _mul(opcode, operands);
+    } else if (opcode_ == "mla" or opcode_ == "uml" or opcode_ == "sml") {
+        machine_code = _mla(opcode, operands);
+    } else if (opcode_ == "str") {
+        machine_code = _str(opcode, operands);
+    } else if (opcode_ == "ldr") {
+        machine_code = _ldr(opcode, operands);
+    } else if (opcode_ == "b") {
+        machine_code = _b(opcode, operands);
+    } else if (opcode_ == "bl") {
+        machine_code = _bl(opcode, operands);
+    } else {
+        machine_code = _unk(opcode, operands);
     }
 
     return asmcode;
@@ -93,3 +146,6 @@ uint32_t Assembler::_ldr(std::string opcode, std::vector<std::string> operands) 
 /* Branch Instructions */
 uint32_t Assembler::_b(std::string opcode, std::vector<std::string> operands) { return 0; };
 uint32_t Assembler::_bl(std::string opcode, std::vector<std::string> operands) { return 0; };
+
+/* Unknown Instruction */
+uint32_t Assembler::_unk(std::string opcode, std::vector<std::string> operands) { return 0; };
