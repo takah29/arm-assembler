@@ -1,8 +1,6 @@
 #include <string>
 #include <vector>
 
-enum class InstructionType { DataProcessing, Memory, Branch };
-
 class Assembler {
    public:
     Assembler();

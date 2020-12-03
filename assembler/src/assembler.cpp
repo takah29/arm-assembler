@@ -73,7 +73,7 @@ std::string Assembler::convert(const std::string asmcode) {
         machine_code = _unk(opcode, operands);
     }
 
-    return asmcode;
+    return machine_code;
 }
 
 std::vector<std::string> Assembler::tokenize(const std::string asmcode) {
@@ -115,37 +115,37 @@ std::vector<std::string> Assembler::tokenize(const std::string asmcode) {
 }
 
 /* Data Processing Instructions */
-uint32_t Assembler::_and(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_eor(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_sub(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_rsb(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_add(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_adc(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_sbc(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_rsc(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_tst(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_teq(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_cmp(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_cmn(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_orr(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_mov(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_lsl(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_lsr(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_asr(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_rrx(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_ror(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_bic(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_mvn(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_mul(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_mla(std::string opcode, std::vector<std::string> operands) { return 0; };
+uint32_t Assembler::_and(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_eor(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_sub(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_rsb(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_add(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_adc(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_sbc(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_rsc(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_tst(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_teq(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_cmp(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_cmn(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_orr(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_mov(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_lsl(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_lsr(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_asr(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_rrx(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_ror(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_bic(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_mvn(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_mul(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_mla(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
 
 /* Memory Instructions*/
-uint32_t Assembler::_str(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_ldr(std::string opcode, std::vector<std::string> operands) { return 0; };
+uint32_t Assembler::_str(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_ldr(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
 
 /* Branch Instructions */
-uint32_t Assembler::_b(std::string opcode, std::vector<std::string> operands) { return 0; };
-uint32_t Assembler::_bl(std::string opcode, std::vector<std::string> operands) { return 0; };
+uint32_t Assembler::_b(std::string opcode, std::vector<std::string> operands) { return 0; };   // not inplemented
+uint32_t Assembler::_bl(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
 
 /* Unknown Instruction */
-uint32_t Assembler::_unk(std::string opcode, std::vector<std::string> operands) { return 0; };
+uint32_t Assembler::_unk(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
