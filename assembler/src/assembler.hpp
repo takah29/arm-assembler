@@ -45,4 +45,7 @@ class Assembler {
     /* Branch Instructions */
     uint32_t _b(std::string opcode, std::vector<std::string> operands);
     uint32_t _bl(std::string opcode, std::vector<std::string> operands);
+
+    /* Unknown Instruction */
+    uint32_t _unk(std::string opcode, std::vector<std::string> operands);
 };
