@@ -1,3 +1,4 @@
+#include <bitset>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -25,16 +26,15 @@ int main(int argc, char **argv) {
         return 1;
     }
 
+    Assembler assembler{};
     string asmcode;
     while (getline(infile, asmcode)) {
         asmcode = strip(asmcode, " ");
         if (asmcode == "" or asmcode[0] == '#') {
             continue;
         }
-        cout << asmcode << " -> " << asmcode_to_bits(asmcode) << endl;
-        for (auto x : tokenize(asmcode)) {
-            cout << x << ' ' << x.size() << endl;
-        }
+        auto machine_code = assembler.convert(asmcode);
+        cout << bitset<32>(machine_code) << endl;
     }
     return 0;
 }
