@@ -1,17 +1,22 @@
 #include "assembler.hpp"
 
 #include <algorithm>
+#include <cassert>
 #include <string>
 #include <vector>
 
 Assembler::Assembler() {}
 Assembler::~Assembler() {}
 
-uint32_t Assembler::convert(const std::string asmcode) {
+uint32_t Assembler::convert(std::string asmcode) {
+    std::transform(asmcode.begin(), asmcode.end(), asmcode.begin(), ::tolower);
     auto tokens = tokenize(asmcode);
 
     std::string opcode = tokens[0];
+
     auto opcode_ = opcode.substr(0, 3);
+    assert(opcode_.size() > 5);
+
     std::vector<std::string> operands(tokens.begin() + 1, tokens.end());
 
     uint32_t machine_code;
@@ -115,37 +120,97 @@ std::vector<std::string> Assembler::tokenize(const std::string asmcode) {
 }
 
 /* Data Processing Instructions */
-uint32_t Assembler::_and(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_eor(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_sub(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_rsb(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_add(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_adc(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_sbc(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_rsc(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_tst(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_teq(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_cmp(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_cmn(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_orr(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_mov(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_lsl(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_lsr(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_asr(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_rrx(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_ror(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_bic(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_mvn(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_mul(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_mla(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_and(std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    if (opcode.size() == 3) {
+    } else if (opcode.size() == 4) {
+    } else {
+    }
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_eor([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_sub([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_rsb([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_add([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_adc([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_sbc([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_rsc([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_tst([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_teq([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_cmp([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_cmn([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_orr([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_mov([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_lsl([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_lsr([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_asr([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_rrx([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_ror([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_bic([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_mvn([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_mul([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_mla([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
 
 /* Memory Instructions*/
-uint32_t Assembler::_str(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
-uint32_t Assembler::_ldr(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_str([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_ldr([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
 
 /* Branch Instructions */
-uint32_t Assembler::_b(std::string opcode, std::vector<std::string> operands) { return 0; };   // not inplemented
-uint32_t Assembler::_bl(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_b([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
+uint32_t Assembler::_bl([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
 
 /* Unknown Instruction */
-uint32_t Assembler::_unk(std::string opcode, std::vector<std::string> operands) { return 0; };  // not inplemented
+uint32_t Assembler::_unk([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
+    return 0;
+};  // not inplemented
