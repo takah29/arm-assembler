@@ -7,7 +7,7 @@
 Assembler::Assembler() {}
 Assembler::~Assembler() {}
 
-std::string Assembler::convert(const std::string asmcode) {
+uint32_t Assembler::convert(const std::string asmcode) {
     auto tokens = tokenize(asmcode);
 
     std::string opcode = tokens[0];

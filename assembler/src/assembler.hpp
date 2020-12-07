@@ -6,7 +6,7 @@ class Assembler {
     Assembler();
     ~Assembler();
 
-    std::string convert(const std::string asmcode);
+    uint32_t convert(const std::string asmcode);
 
    private:
     std::vector<std::string> tokenize(const std::string asmcode);
