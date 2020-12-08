@@ -1,7 +1,7 @@
 #include "assembler.hpp"
 
 #include <algorithm>
-#include <cassert>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -13,66 +13,68 @@ uint32_t Assembler::convert(std::string asmcode) {
     auto tokens = tokenize(asmcode);
 
     std::string opcode = tokens[0];
+    if (opcode.size() > 5) {
+        throw std::runtime_error("opcode string is too long.");
+    }
 
-    auto opcode_ = opcode.substr(0, 3);
-    assert(opcode_.size() > 5);
+    auto opcode_base = opcode.substr(0, 3);
 
     std::vector<std::string> operands(tokens.begin() + 1, tokens.end());
 
     uint32_t machine_code;
-    if (opcode_ == "and") {
+    if (opcode_base == "and") {
         machine_code = _and(opcode, operands);
-    } else if (opcode_ == "eor") {
+    } else if (opcode_base == "eor") {
         machine_code = _eor(opcode, operands);
-    } else if (opcode_ == "sub") {
+    } else if (opcode_base == "sub") {
         machine_code = _sub(opcode, operands);
-    } else if (opcode_ == "rsb") {
+    } else if (opcode_base == "rsb") {
         machine_code = _rsb(opcode, operands);
-    } else if (opcode_ == "add") {
+    } else if (opcode_base == "add") {
         machine_code = _add(opcode, operands);
-    } else if (opcode_ == "adc") {
+    } else if (opcode_base == "adc") {
         machine_code = _adc(opcode, operands);
-    } else if (opcode_ == "sbc") {
+    } else if (opcode_base == "sbc") {
         machine_code = _sbc(opcode, operands);
-    } else if (opcode_ == "rsc") {
+    } else if (opcode_base == "rsc") {
         machine_code = _rsc(opcode, operands);
-    } else if (opcode_ == "tst") {
+    } else if (opcode_base == "tst") {
         machine_code = _tst(opcode, operands);
-    } else if (opcode_ == "teq") {
+    } else if (opcode_base == "teq") {
         machine_code = _teq(opcode, operands);
-    } else if (opcode_ == "cmp") {
+    } else if (opcode_base == "cmp") {
         machine_code = _cmp(opcode, operands);
-    } else if (opcode_ == "cmn") {
+    } else if (opcode_base == "cmn") {
         machine_code = _cmn(opcode, operands);
-    } else if (opcode_ == "orr") {
+    } else if (opcode_base == "orr") {
         machine_code = _orr(opcode, operands);
-    } else if (opcode_ == "mov") {
+    } else if (opcode_base == "mov") {
         machine_code = _mov(opcode, operands);
-    } else if (opcode_ == "lsl") {
+    } else if (opcode_base == "lsl") {
         machine_code = _lsl(opcode, operands);
-    } else if (opcode_ == "lsr") {
+    } else if (opcode_base == "lsr") {
         machine_code = _lsr(opcode, operands);
-    } else if (opcode_ == "asr") {
+    } else if (opcode_base == "asr") {
         machine_code = _asr(opcode, operands);
-    } else if (opcode_ == "rrx") {
+    } else if (opcode_base == "rrx") {
         machine_code = _rrx(opcode, operands);
-    } else if (opcode_ == "ror") {
+    } else if (opcode_base == "ror") {
         machine_code = _ror(opcode, operands);
-    } else if (opcode_ == "bic") {
+    } else if (opcode_base == "bic") {
         machine_code = _bic(opcode, operands);
-    } else if (opcode_ == "mvn") {
+    } else if (opcode_base == "mvn") {
         machine_code = _mvn(opcode, operands);
-    } else if (opcode_ == "mul" or opcode_ == "umu" or opcode_ == "smu") {
+    } else if (opcode_base == "mul" or opcode_base == "umu" or opcode_base == "smu") {
         machine_code = _mul(opcode, operands);
-    } else if (opcode_ == "mla" or opcode_ == "uml" or opcode_ == "sml") {
+    } else if (opcode_base == "mla" or opcode_base == "uml" or opcode_base == "sml") {
         machine_code = _mla(opcode, operands);
-    } else if (opcode_ == "str") {
+    } else if (opcode_base == "str") {
         machine_code = _str(opcode, operands);
-    } else if (opcode_ == "ldr") {
+    } else if (opcode_base == "ldr") {
         machine_code = _ldr(opcode, operands);
-    } else if (opcode_ == "b") {
+    } else if (opcode_base == "b") {
         machine_code = _b(opcode, operands);
-    } else if (opcode_ == "bl") {
+    } else if (opcode_base == "bl") {
         machine_code = _bl(opcode, operands);
     } else {
         machine_code = _unk(opcode, operands);
