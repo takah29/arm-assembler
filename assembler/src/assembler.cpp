@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <string>
+#include <tuple>
 #include <vector>
 
 Assembler::Assembler() {}
@@ -119,6 +120,21 @@ std::vector<std::string> Assembler::tokenize(const std::string asmcode) {
     tokens.push_back(asmcode.substr(left_pos, asmcode.size() - left_pos + 1));
 
     return tokens;
+}
+
+/**
+ * opcodeの文字列を命令部と条件部に分割する
+ * example: "ADDEQ" -> ("ADD", "EQ")
+ */
+std::tuple<std::string, std::string> Assembler::split_opcode(std::string opcode) {
+    std::tuple<std::string, std::string> ret;
+    if (opcode.size() <= 3) {
+        ret = std::make_tuple(opcode, "");
+    } else {
+        ret = std::make_tuple(opcode.substr(0, 3), opcode.substr(3));
+    }
+
+    return ret;
 }
 
 /* Data Processing Instructions */
