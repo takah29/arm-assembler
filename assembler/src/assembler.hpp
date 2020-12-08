@@ -11,6 +11,17 @@ class Assembler {
    private:
     std::vector<std::string> tokenize(const std::string asmcode);
 
+    uint32_t get_op_2bit(std::string opcode);
+    uint32_t get_cond_4bit(std::string opcode);
+    uint32_t get_cmd_4bit(std::string opcode);
+    uint32_t get_reg_4bit(std::string reg);
+    uint32_t get_iflag_1bit(std::string src2);
+    uint32_t get_sflag_1bit(std::string opcode);
+    uint32_t get_rot_4bit(std::string src2);
+    uint32_t get_imm8_8bit(std::string src2);
+    uint32_t get_shamt5_5bit(std::string src2);
+    uint32_t get_sh_2bit(std::string src2);
+
     /* Data Processing Instructions */
     uint32_t _and(std::string opcode, std::vector<std::string> operands);
     uint32_t _eor(std::string opcode, std::vector<std::string> operands);
