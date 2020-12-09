@@ -138,6 +138,8 @@ std::tuple<std::string, std::string> Assembler::split_opcode(std::string opcode)
     return ret;
 }
 
+uint32_t Assembler::get_cond_4bit(const std::string opcode_ext) const { return condition_map.at(opcode_ext); }
+
 /* Data Processing Instructions */
 uint32_t Assembler::_and(std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
     if (opcode.size() == 3) {
