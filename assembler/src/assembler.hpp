@@ -1,5 +1,6 @@
 #include <string>
 #include <tuple>
+#include <unordered_map>
 #include <vector>
 
 class Assembler {
@@ -10,6 +11,11 @@ class Assembler {
     uint32_t convert(const std::string asmcode);
 
    private:
+    inline static const std::unordered_map<std::string, uint32_t> condition_map{
+        {"eq", 0b0000}, {"ne", 0b0001}, {"cs", 0b0010}, {"hs", 0b0010}, {"cc", 0b0011}, {"lo", 0b0011},
+        {"mi", 0b0100}, {"pl", 0b0101}, {"vs", 0b0110}, {"vc", 0b0111}, {"hi", 0b1000}, {"ls", 0b1001},
+        {"ge", 0b1010}, {"lt", 0b1011}, {"gt", 0b1100}, {"le", 0b1101}, {"al", 0b1110}};
+
     std::vector<std::string> tokenize(const std::string asmcode);
     std::tuple<std::string, std::string> split_opcode(std::string opcode);
 
