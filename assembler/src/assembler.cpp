@@ -139,6 +139,7 @@ std::tuple<std::string, std::string> Assembler::split_opcode(std::string opcode)
 }
 
 uint32_t Assembler::get_cond_4bit(const std::string opcode_ext) const { return condition_map.at(opcode_ext); }
+uint32_t Assembler::get_reg_4bit(const std::string reg) const { return reg[1] - '0'; }
 
 /* Data Processing Instructions */
 uint32_t Assembler::_and(std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
