@@ -124,7 +124,8 @@ std::vector<std::string> Assembler::tokenize(const std::string asmcode) {
 
 /**
  * opcodeの文字列を命令部と条件部に分割する
- * example: "ADDEQ" -> ("ADD", "EQ")
+ * example1: "ADDEQ" -> ("ADD", "EQ")
+ * example2: "ADDS" -> ("ADD", "S")
  */
 std::tuple<std::string, std::string> Assembler::split_opcode(std::string opcode) {
     std::tuple<std::string, std::string> ret;
