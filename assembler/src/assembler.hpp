@@ -19,15 +19,15 @@ class Assembler {
     std::vector<std::string> tokenize(const std::string asmcode);
     std::tuple<std::string, std::string> split_opcode(std::string opcode);
 
-    uint32_t get_cond_4bit(std::string opcode);
-    uint32_t get_reg_4bit(std::string reg);
-    uint32_t get_iflag_1bit(std::vector<std::string> src2);
-    uint32_t get_sflag_1bit(std::string opcode);
-    uint32_t get_rot_4bit(std::vector<std::string> src2);
-    uint32_t get_imm8_8bit(std::vector<std::string> src2);
-    uint32_t get_shamt5_5bit(std::vector<std::string> src2);
-    uint32_t get_sh_2bit(std::vector<std::string> src2);
-    uint32_t get_ibarflag_1bit(std::vector<std::string> src2);
+    uint32_t get_cond_4bit(const std::string opcode_ext) const;
+    uint32_t get_reg_4bit(const std::string reg) const;
+    uint32_t get_iflag_1bit(const std::vector<std::string> src2) const;
+    uint32_t get_sflag_1bit(const std::string opcode) const;
+    uint32_t get_rot_4bit(const std::vector<std::string> src2) const;
+    uint32_t get_imm8_8bit(const std::vector<std::string> src2) const;
+    uint32_t get_shamt5_5bit(const std::vector<std::string> src2) const;
+    uint32_t get_sh_2bit(const std::vector<std::string> src2) const;
+    uint32_t get_ibarflag_1bit(const std::vector<std::string> src2) const;
 
     /* Data Processing Instructions */
     uint32_t _and(std::string opcode, std::vector<std::string> operands);  // AND Rd, Rn, Src2
