@@ -19,9 +19,7 @@ class Assembler {
     std::vector<std::string> tokenize(const std::string asmcode);
     std::tuple<std::string, std::string> split_opcode(std::string opcode);
 
-    uint32_t get_op_2bit(std::string opcode);
     uint32_t get_cond_4bit(std::string opcode);
-    uint32_t get_cmd_4bit(std::string opcode);
     uint32_t get_reg_4bit(std::string reg);
     uint32_t get_iflag_1bit(std::vector<std::string> src2);
     uint32_t get_sflag_1bit(std::string opcode);
