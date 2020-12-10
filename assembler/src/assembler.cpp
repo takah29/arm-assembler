@@ -1,6 +1,7 @@
 #include "assembler.hpp"
 
 #include <algorithm>
+#include <iostream>
 #include <stdexcept>
 #include <string>
 #include <tuple>
@@ -9,9 +10,17 @@
 Assembler::Assembler() {}
 Assembler::~Assembler() {}
 
-uint32_t Assembler::convert(std::string asmcode) {
+uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
     std::transform(asmcode.begin(), asmcode.end(), asmcode.begin(), ::tolower);
     auto tokens = tokenize(asmcode);
+
+    if (debug_flag) {
+        std::cout << tokens[0];
+        for (size_t i = 1; i < tokens.size(); i++) {
+            std::cout << " | " << tokens[i];
+        }
+        std::cout << std::endl;
+    }
 
     std::string opcode = tokens[0];
     if (opcode.size() > 5) {
