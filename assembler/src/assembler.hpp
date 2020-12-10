@@ -1,3 +1,6 @@
+#ifndef _ASSEMBLER_H
+#define _ASSEMBLER_H
+
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -65,3 +68,5 @@ class Assembler {
     /* Unknown Instruction */
     uint32_t _unk(std::string opcode, std::vector<std::string> operands);
 };
+
+#endif
