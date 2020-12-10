@@ -11,7 +11,7 @@ class Assembler {
     Assembler();
     ~Assembler();
 
-    uint32_t convert(const std::string asmcode);
+    uint32_t convert(std::string asmcode, const bool debug_flag);
 
    private:
     inline static const std::unordered_map<std::string, uint32_t> condition_map{
