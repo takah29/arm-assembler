@@ -14,7 +14,12 @@ class Assembler {
     uint32_t convert(std::string asmcode, const bool debug_flag);
 
    private:
-    inline static const std::unordered_map<std::string, uint32_t> condition_map{
+    inline static const std::unordered_map<std::string, int> format_type_map{
+        {"and", 1}, {"eor", 1}, {"sub", 1}, {"rsb", 1}, {"add", 1}, {"adc", 1}, {"sbc", 1}, {"rsc", 1},
+        {"tst", 2}, {"teq", 2}, {"cmp", 2}, {"cmn", 2}, {"orr", 1}, {"mov", 3}, {"lsl", 4}, {"lsr", 4},
+        {"asr", 4}, {"rrx", 4}, {"ror", 4}, {"bic", 1}, {"mvn", 1}, {"mul", 5}, {"mla", 6}, {"umu", 6},
+        {"uml", 6}, {"smu", 6}, {"sml", 6}, {"str", 7}, {"ldr", 7}, {"b", 8},   {"bl", 8}};
+    inline static const std::unordered_map<std::string, uint32_t> cond_map{
         {"eq", 0b0000}, {"ne", 0b0001}, {"cs", 0b0010}, {"hs", 0b0010}, {"cc", 0b0011}, {"lo", 0b0011},
         {"mi", 0b0100}, {"pl", 0b0101}, {"vs", 0b0110}, {"vc", 0b0111}, {"hi", 0b1000}, {"ls", 0b1001},
         {"ge", 0b1010}, {"lt", 0b1011}, {"gt", 0b1100}, {"le", 0b1101}, {"al", 0b1110}};
