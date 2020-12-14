@@ -14,11 +14,38 @@ class Assembler {
     uint32_t convert(std::string asmcode, const bool debug_flag);
 
    private:
-    inline static const std::unordered_map<std::string, int> format_type_map{
-        {"and", 1}, {"eor", 1}, {"sub", 1}, {"rsb", 1}, {"add", 1}, {"adc", 1}, {"sbc", 1}, {"rsc", 1},
-        {"tst", 2}, {"teq", 2}, {"cmp", 2}, {"cmn", 2}, {"orr", 1}, {"mov", 3}, {"lsl", 4}, {"lsr", 4},
-        {"asr", 4}, {"rrx", 4}, {"ror", 4}, {"bic", 1}, {"mvn", 1}, {"mul", 5}, {"mla", 6}, {"umu", 6},
-        {"uml", 6}, {"smu", 6}, {"sml", 6}, {"str", 7}, {"ldr", 7}, {"b", 8},   {"bl", 8}};
+    inline static const std::unordered_map<std::string, std::unordered_map<std::string, uint32_t>> opcode_info_map{
+        {"and", {{"ftype", 1}, {"cmd", 0b0000}}},
+        {"eor", {{"ftype", 1}, {"cmd", 0b0001}}},
+        {"sub", {{"ftype", 1}, {"cmd", 0b0010}}},
+        {"rsb", {{"ftype", 1}, {"cmd", 0b0011}}},
+        {"add", {{"ftype", 1}, {"cmd", 0b0100}}},
+        {"adc", {{"ftype", 1}, {"cmd", 0b0101}}},
+        {"sbc", {{"ftype", 1}, {"cmd", 0b0110}}},
+        {"rsc", {{"ftype", 1}, {"cmd", 0b0111}}},
+        {"tst", {{"ftype", 2}, {"cmd", 0b1000}}},
+        {"teq", {{"ftype", 2}, {"cmd", 0b1001}}},
+        {"cmp", {{"ftype", 2}, {"cmd", 0b1010}}},
+        {"cmn", {{"ftype", 2}, {"cmd", 0b1011}}},
+        {"orr", {{"ftype", 1}, {"cmd", 0b1100}}},
+        {"mov", {{"ftype", 3}, {"cmd", 0b1101}}},
+        {"lsl", {{"ftype", 4}, {"cmd", 0b1101}}},
+        {"lsr", {{"ftype", 4}, {"cmd", 0b1101}}},
+        {"asr", {{"ftype", 4}, {"cmd", 0b1101}}},
+        {"rrx", {{"ftype", 4}, {"cmd", 0b1101}}},
+        {"ror", {{"ftype", 4}, {"cmd", 0b1101}}},
+        {"bic", {{"ftype", 1}, {"cmd", 0b1110}}},
+        {"mvn", {{"ftype", 1}, {"cmd", 0b1111}}},
+        {"mul", {{"ftype", 5}, {"cmd", 0b000}}},
+        {"mla", {{"ftype", 6}, {"cmd", 0b001}}},
+        {"umu", {{"ftype", 6}, {"cmd", 0b100}}},
+        {"uml", {{"ftype", 6}, {"cmd", 0b101}}},
+        {"smu", {{"ftype", 6}, {"cmd", 0b110}}},
+        {"sml", {{"ftype", 6}, {"cmd", 0b111}}},
+        {"str", {{"ftype", 7}, {"L", 0b0}}},
+        {"ldr", {{"ftype", 7}, {"L", 0b1}}},
+        {"b",   {{"ftype", 8}, {"L", 0b0}}},
+        {"bl",  {{"ftype", 8}, {"L", 0b1}}}};
     inline static const std::unordered_map<std::string, uint32_t> cond_map{
         {"eq", 0b0000}, {"ne", 0b0001}, {"cs", 0b0010}, {"hs", 0b0010}, {"cc", 0b0011}, {"lo", 0b0011},
         {"mi", 0b0100}, {"pl", 0b0101}, {"vs", 0b0110}, {"vc", 0b0111}, {"hi", 0b1000}, {"ls", 0b1001},
