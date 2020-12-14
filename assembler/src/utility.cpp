@@ -1,5 +1,8 @@
 #include "utility.hpp"
 
+#include <string>
+#include <vector>
+
 std::string strip(std::string &s, const std::string trim_str) {
     std::string result;
 
@@ -8,5 +11,19 @@ std::string strip(std::string &s, const std::string trim_str) {
         std::string::size_type right = s.find_last_not_of(trim_str);
         result = s.substr(left, right - left + 1);
     }
+    return result;
+}
+
+std::vector<size_t> find_all(const std::string str, const std::string substr) {
+    std::vector<size_t> result;
+
+    int subStrSize = substr.size();
+    size_t pos = str.find(substr);
+
+    while (pos != std::string::npos) {
+        result.push_back(pos);
+        pos = str.find(substr, pos + subStrSize);
+    }
+
     return result;
 }
