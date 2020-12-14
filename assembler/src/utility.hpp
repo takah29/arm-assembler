@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 template <class... A>
 void print() {
@@ -24,5 +25,6 @@ void print(const T &first, const A &... rest) {
 }
 
 std::string strip(std::string &s, const std::string trim_str);
+std::vector<size_t> find_all(const std::string str, const std::string substr);
 
 #endif
