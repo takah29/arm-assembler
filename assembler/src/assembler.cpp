@@ -29,11 +29,6 @@ uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
         std::cout << std::endl;
     }
 
-    std::string opcode = tokens[0];
-    if (opcode.size() > 5) {
-        throw std::runtime_error("opcode string is too long.");
-    }
-
     auto opcode_base = opcode.substr(0, 3);
 
     std::vector<std::string> operands(tokens.begin() + 1, tokens.end());
@@ -101,41 +96,44 @@ uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
 }
 
 std::vector<std::string> Assembler::tokenize(const std::string asmcode) {
-    std::vector<std::string> tokens{};
-    size_t left_pos = 0, right_pos = 0;
-    bool in_brackets = false;
+    auto pos = asmcode.find_first_of(' ');
+    auto opcode = asmcode.substr(0, pos);
+    auto operands = asmcode.substr(pos + 1);
+    auto opcode_base = opcode.substr(0, 3);
 
-    for (size_t i = 1; i < asmcode.size(); i++) {
-        if (in_brackets == true) continue;
+    std::vector<std::string> tokens;
+    auto ftype = Assembler::opcode_info_map.at(opcode_base).at("ftype");
 
-        if (asmcode[i] == ' ') {
-            if (asmcode[i - 1] == ',') {
-                right_pos = left_pos = i;
-            } else if (asmcode[i - 1] != ' ') {
-                right_pos = i;
-                tokens.push_back(asmcode.substr(left_pos, right_pos - left_pos));
-                left_pos = i;
-            }
-        } else if (asmcode[i] == '[' or asmcode[i] == '{') {
-            in_brackets = true;
-            left_pos = right_pos = i;
-        } else if (asmcode[i] == ']' or asmcode[i] == '}') {
-            in_brackets = false;
-            right_pos = i;
-            tokens.push_back(asmcode.substr(left_pos, right_pos - left_pos + 1));
-            left_pos = i;
-        } else if (asmcode[i] == ',') {
-            right_pos = i;
-            tokens.push_back(asmcode.substr(left_pos, right_pos - left_pos));
-            left_pos = i;
-        } else if (asmcode[i] != ' ' and asmcode[i - 1] == ' ') {
-            left_pos = right_pos = i;
-        }
+    switch (ftype) {
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        case 8:
+            break;
+        default:
+            break;
     }
-
-    tokens.push_back(asmcode.substr(left_pos, asmcode.size() - left_pos + 1));
-
     return tokens;
+}
+
+std::vector<std::string> Assembler::split_operands(const std::string operandes, const size_t n_operands) {
+    std::vector<std::string> result;
+    auto inds = find_all(operandes, ",");
+    for (size_t i = 0; i < n_operands - 1; i++) {
+        result.push_back(operandes.substr(inds[i], inds[i + 1] - inds[i]));
+    }
+    return result;
 }
 
 /**
@@ -154,15 +152,19 @@ std::tuple<std::string, std::string> Assembler::split_opcode(std::string opcode)
     return ret;
 }
 
-uint32_t Assembler::get_cond_4bit(const std::string opcode_ext) const { return condition_map.at(opcode_ext); }
+uint32_t Assembler::get_cond_4bit(const std::string opcode_ext) const { return cond_map.at(opcode_ext); }
 uint32_t Assembler::get_reg_4bit(const std::string reg) const { return reg[1] - '0'; }
+uint32_t Assembler::get_iflag_1bit(const std::vector<std::string> src2) const { return 0; }
 
 /* Data Processing Instructions */
 uint32_t Assembler::_and(std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
-    if (opcode.size() == 3) {
-    } else if (opcode.size() == 4) {
-    } else {
-    }
+    auto [opcode_base, opcode_ext] = split_opcode(opcode);
+    auto rd = operands[0];
+    auto rn = operands[1];
+    std::vector<std::string> src2(operands.begin() + 2, operands.end());
+
+    // auto rd_bits = get_reg_4bit(rd);
+    // auto rn_bits = get_reg_4bit(rn);
     return 0;
 };  // not inplemented
 uint32_t Assembler::_eor([[maybe_unused]] std::string opcode, [[maybe_unused]] std::vector<std::string> operands) {
