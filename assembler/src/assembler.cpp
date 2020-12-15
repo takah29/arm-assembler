@@ -34,7 +34,7 @@ uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
     std::vector<std::string> operands(tokens.begin() + 1, tokens.end());
 
     uint32_t machine_code = 0;
-
+    print("r");
     return machine_code;
 }
 
@@ -44,29 +44,45 @@ std::vector<std::string> Assembler::tokenize(const std::string asmcode) {
     auto operands = asmcode.substr(pos + 1);
     auto opcode_base = opcode.substr(0, 3);
 
-    std::vector<std::string> tokens;
+    std::vector<std::string> tokens{opcode};
+
+    // TODO: operandsから判定するようにする
+    if (opcode_base == "nop") {
+        return tokens;
+    }
+
     auto ftype = Assembler::opcode_info_map.at(opcode_base).at("ftype");
 
+    std::vector<std::string> operands_v;
     switch (ftype) {
         case 1:
+            operands_v = split_operands(operands, 3);
             break;
         case 2:
+            operands_v = split_operands(operands, 2);
             break;
         case 3:
+            operands_v = split_operands(operands, 2);
             break;
         case 4:
+            operands_v = split_operands(operands, 3);
             break;
         case 5:
+            operands_v = split_operands(operands, 3);
             break;
         case 6:
+            operands_v = split_operands(operands, 4);
             break;
         case 7:
+            operands_v = split_operands(operands, 2);
             break;
         case 8:
+            operands_v = split_operands(operands, 1);
             break;
         default:
-            break;
+            throw std::runtime_error("undefined format type.");
     }
+    tokens.insert(tokens.end(), operands_v.begin(), operands_v.end());
     return tokens;
 }
 
