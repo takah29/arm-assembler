@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+void print() { std::cout << std::endl; }
+
 std::string strip(std::string &s, const std::string trim_str) {
     std::string result;
 

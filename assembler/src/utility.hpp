@@ -1,30 +1,46 @@
 #ifndef _UTILITY_H
 #define _UTILITY_H
 
+#include <array>
 #include <iostream>
 #include <string>
 #include <vector>
 
-template <class... A>
-void print() {
-    std::cout << std::endl;
-}
-template <class... A>
-void prints_rest() {
-    std::cout << std::endl;
-}
-template <class T, class... A>
-void prints_rest(const T &first, const A &... rest) {
-    std::cout << " " << first;
-    prints_rest(rest...);
-}
-template <class T, class... A>
-void print(const T &first, const A &... rest) {
-    std::cout << first;
-    prints_rest(rest...);
+// デバッグ用print関数
+void print();
+
+/**
+ * 可変長引数、任意型
+ */
+template <class Head, class... Tail>
+void print(Head&& head, Tail&&... tail) {
+    std::cout << head;
+    if (sizeof...(tail) != 0) std::cout << " ";
+    print(std::forward<Tail>(tail)...);
 }
 
-std::string strip(std::string &s, const std::string trim_str);
+/**
+ * 1次元vectorをスペース区切りで表示する
+ */
+template <class T>
+void print(std::vector<T>& vec) {
+    for (auto& a : vec) {
+        std::cout << a;
+        if (&a != &vec.back()) std::cout << " ";
+    }
+    std::cout << std::endl;
+}
+
+/**
+ * 2次元vectorを改行とスペース区切りで表示する
+ */
+template <class T>
+void print(std::vector<std::vector<T>>& df) {
+    for (auto& vec : df) {
+        print(vec);
+    }
+}
+std::string strip(std::string& s, const std::string trim_str);
 std::vector<size_t> find_all(const std::string str, const std::string substr);
 
 #endif
