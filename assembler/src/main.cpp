@@ -14,12 +14,12 @@ int main(int argc, char **argv) {
 
     if (argc < 2 or 3 < argc) {
         printf("Error: Wrong number of arguments.\n");
-        printf("Usage: assembler <textfile> [option -d]");
+        printf("Usage: assembler <textfile> [option -d]\n");
         return 1;
     }
 
     string asmfile_path = args[1];
-    bool debug_flag = (args[2] == "-d") ? true : false;
+    bool debug_flag = (argc == 3 and args[2] == "-d") ? true : false;
     ifstream infile(asmfile_path);
 
     if (infile.fail()) {
