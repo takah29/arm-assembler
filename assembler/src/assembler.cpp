@@ -7,12 +7,19 @@
 #include <tuple>
 #include <vector>
 
+#include "utility.hpp"
+
 Assembler::Assembler() {}
 Assembler::~Assembler() {}
 
 uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
     std::transform(asmcode.begin(), asmcode.end(), asmcode.begin(), ::tolower);
     auto tokens = tokenize(asmcode);
+
+    std::string opcode = tokens[0];
+    if (opcode.size() > 5) {
+        throw std::runtime_error("opcode string is too long.");
+    }
 
     if (debug_flag) {
         std::cout << tokens[0];
