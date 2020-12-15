@@ -51,7 +51,7 @@ class Assembler {
         {"mi", 0b0100}, {"pl", 0b0101}, {"vs", 0b0110}, {"vc", 0b0111}, {"hi", 0b1000}, {"ls", 0b1001},
         {"ge", 0b1010}, {"lt", 0b1011}, {"gt", 0b1100}, {"le", 0b1101}, {"al", 0b1110}};
 
-    std::vector<std::string> tokenize(const std::string asmcode, const size_t n_operands);
+    std::vector<std::string> tokenize(const std::string asmcode);
     std::vector<std::string> split_operands(const std::string operandes, const size_t n_operands);
     std::tuple<std::string, std::string> split_opcode(std::string opcode);
 
