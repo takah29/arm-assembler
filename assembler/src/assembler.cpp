@@ -14,6 +14,7 @@ Assembler::~Assembler() {}
 
 uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
     std::transform(asmcode.begin(), asmcode.end(), asmcode.begin(), ::tolower);
+    // TODO: スペースの数を1つにする処理を追加する
     auto tokens = tokenize(asmcode);
 
     std::string opcode = tokens[0];
@@ -22,11 +23,7 @@ uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
     }
 
     if (debug_flag) {
-        std::cout << tokens[0];
-        for (size_t i = 1; i < tokens.size(); i++) {
-            std::cout << " | " << tokens[i];
-        }
-        std::cout << std::endl;
+        print(tokens);
     }
 
     auto opcode_base = opcode.substr(0, 3);
@@ -34,19 +31,21 @@ uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
     std::vector<std::string> operands(tokens.begin() + 1, tokens.end());
 
     uint32_t machine_code = 0;
-    print("r");
     return machine_code;
 }
 
 std::vector<std::string> Assembler::tokenize(const std::string asmcode) {
     auto pos = asmcode.find_first_of(' ');
     auto opcode = asmcode.substr(0, pos);
+
     auto operands = asmcode.substr(pos + 1);
+    operands = replace_all(operands, "  ", " ");
+
     auto opcode_base = opcode.substr(0, 3);
 
     std::vector<std::string> tokens{opcode};
 
-    // TODO: operandsから判定するようにする
+    // TODO: operandsからnopを判定するようにする
     if (opcode_base == "nop") {
         return tokens;
     }
@@ -86,12 +85,24 @@ std::vector<std::string> Assembler::tokenize(const std::string asmcode) {
     return tokens;
 }
 
-std::vector<std::string> Assembler::split_operands(const std::string operandes, const size_t n_operands) {
+std::vector<std::string> Assembler::split_operands(const std::string operands, const size_t n_operands) {
     std::vector<std::string> result;
-    auto inds = find_all(operandes, ",");
-    for (size_t i = 0; i < n_operands - 1; i++) {
-        result.push_back(operandes.substr(inds[i], inds[i + 1] - inds[i]));
+    std::string elem = "";
+    size_t count_args = 0;
+
+    for (size_t i = 0; i < operands.size(); i++) {
+        if (operands[i] != ',' and operands[i] != ' ') {
+            elem += operands[i];
+        } else if (operands[i] == ',') {
+            result.emplace_back(elem);
+            elem.clear();
+            if (++count_args == n_operands - 1) {
+                result.emplace_back(operands.substr(i + 2));
+                break;
+            }
+        }
     }
+
     return result;
 }
 
