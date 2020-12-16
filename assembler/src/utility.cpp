@@ -42,3 +42,14 @@ std::vector<std::string> split_reg(const std::string &s, const std::string regex
     }
     return v;
 }
+
+std::string replace_all(const std::string str, const std::string from_str,
+                        const std::string to_str) {
+    auto tmp_str = str;
+    while (1) {
+        auto pos = tmp_str.find(from_str);
+        if (pos == std::string::npos) break;
+        tmp_str.replace(pos, from_str.size(), to_str);
+    }
+    return tmp_str;
+}
