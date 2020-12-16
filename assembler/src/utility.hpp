@@ -42,5 +42,6 @@ void print(std::vector<std::vector<T>>& df) {
 }
 std::string strip(std::string& s, const std::string trim_str);
 std::vector<size_t> find_all(const std::string str, const std::string substr);
+std::vector<std::string> split_reg(const std::string& s, const std::string regex_delim);
 
 #endif

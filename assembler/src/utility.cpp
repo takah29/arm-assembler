@@ -1,5 +1,6 @@
 #include "utility.hpp"
 
+#include <regex>
 #include <string>
 #include <vector>
 
@@ -28,4 +29,16 @@ std::vector<size_t> find_all(const std::string str, const std::string substr) {
     }
 
     return result;
+}
+
+std::vector<std::string> split_reg(const std::string &s, const std::string regex_delim) {
+    std::vector<std::string> v;
+
+    std::regex separator{regex_delim};
+    auto ite = std::sregex_token_iterator(s.begin(), s.end(), separator, -1);
+    auto end = std::sregex_token_iterator();
+    while (ite != end) {
+        v.push_back(*ite++);  // 分割文字列を格納
+    }
+    return v;
 }
