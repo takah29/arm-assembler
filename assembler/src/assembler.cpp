@@ -35,10 +35,6 @@ uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
         throw std::runtime_error("opcode string is too long.");
     }
 
-    if (debug_flag) {
-        print(tokens);
-    }
-
     auto opcode_base = opcode.substr(0, 3);
 
     std::vector<std::string> operands(tokens.begin() + 1, tokens.end());
