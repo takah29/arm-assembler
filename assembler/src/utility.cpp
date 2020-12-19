@@ -31,6 +31,17 @@ std::vector<size_t> find_all(const std::string str, const std::string substr) {
     return result;
 }
 
+std::string unit_space(const std::string s) {
+    std::string ret = s.substr(0, 1);
+
+    for (size_t i = 1; i < s.size(); i++) {
+        if (s[i - 1] != ' ' or s[i] != ' ') {
+            ret += s[i];
+        }
+    }
+    return ret;
+}
+
 std::vector<std::string> split_reg(const std::string &s, const std::string regex_delim) {
     std::vector<std::string> v;
 
@@ -43,8 +54,7 @@ std::vector<std::string> split_reg(const std::string &s, const std::string regex
     return v;
 }
 
-std::string replace_all(const std::string str, const std::string from_str,
-                        const std::string to_str) {
+std::string replace_all(const std::string str, const std::string from_str, const std::string to_str) {
     auto tmp_str = str;
     while (1) {
         auto pos = tmp_str.find(from_str);
