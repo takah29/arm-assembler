@@ -6,7 +6,16 @@
 
 #include "types.hpp"
 
-class DataProcessingField {
+class Field {
+   public:
+    Field();
+    virtual ~Field();
+
+    virtual void input(std::vector<std::string> asmcode_v);
+    virtual uint32_t output();
+};
+
+class DataProcessingField : public Field {
    public:
     DataProcessingField();
     ~DataProcessingField();
@@ -23,7 +32,7 @@ class DataProcessingField {
     uint32_t src2;   // 12bit
 };
 
-class MultiplicationField {
+class MultiplicationField : public Field {
    public:
     MultiplicationField();
     ~MultiplicationField();
