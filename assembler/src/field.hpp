@@ -1,3 +1,6 @@
+#ifndef _FIELD_H
+#define _FIELD_H
+
 #include <string>
 #include <vector>
 
@@ -38,3 +41,5 @@ class MultiplicationField {
     const uint32_t c = 0b1001;  // 4bit
     uint32_t rn;                // 4bit
 };
+
+#endif
