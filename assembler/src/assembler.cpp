@@ -10,7 +10,7 @@
 #include "utility.hpp"
 
 Assembler::Assembler() {
-    // 命令ニモニックと条件ニモニックの情報からオペコード情報を定義
+    // 命令ニモニックと条件ニモニックの定義からオペコード情報を定義
     for (auto &x : opcodebase_info) {
         opcode_info[x.first] = x.second;
         opcode_info[x.first]["cond"] = cond_info.at("al");
@@ -18,6 +18,7 @@ Assembler::Assembler() {
             auto new_key = x.first + y.first;
             opcode_info[new_key] = x.second;
             opcode_info[new_key]["cond"] = y.second;
+            print(new_key, opcode_info[new_key]["cond"]);
         }
     }
 }
@@ -49,20 +50,15 @@ uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
 std::vector<std::string> Assembler::tokenize(const std::string asmcode) {
     auto pos = asmcode.find_first_of(' ');
     auto opcode = asmcode.substr(0, pos);
-
     auto operands = asmcode.substr(pos + 1);
-    operands = replace_all(operands, "  ", " ");
-
-    auto opcode_base = opcode.substr(0, 3);
-
     std::vector<std::string> tokens{opcode};
 
     // TODO: operandsからnopを判定するようにする
-    if (opcode_base == "nop") {
+    if (opcode.substr(0, 3) == "nop") {
         return tokens;
     }
 
-    auto ftype = Assembler::opcodebase_info.at(opcode_base).at("ftype");
+    auto ftype = Assembler::opcode_info.at(opcode).at("ftype");
 
     std::vector<std::string> operands_v;
     switch (ftype) {
@@ -101,6 +97,11 @@ std::vector<std::string> Assembler::split_operands(const std::string operands, c
     std::vector<std::string> result;
     std::string elem = "";
     size_t count_args = 0;
+
+    if (n_operands == 1) {
+        result.emplace_back(operands);
+        return result;
+    }
 
     for (size_t i = 0; i < operands.size(); i++) {
         if (operands[i] != ',' and operands[i] != ' ') {
