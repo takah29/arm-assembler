@@ -119,22 +119,6 @@ std::vector<std::string> Assembler::split_operands(const std::string operands, c
     return result;
 }
 
-/**
- * opcodeの文字列を命令部と条件部に分割する
- * example1: "ADDEQ" -> ("ADD", "EQ")
- * example2: "ADDS" -> ("ADD", "S")
- */
-std::tuple<std::string, std::string> Assembler::split_opcode(std::string opcode) {
-    std::tuple<std::string, std::string> ret;
-    if (opcode.size() <= 3) {
-        ret = std::make_tuple(opcode, "");
-    } else {
-        ret = std::make_tuple(opcode.substr(0, 3), opcode.substr(3));
-    }
-
-    return ret;
-}
-
 uint32_t Assembler::get_cond_4bit(const std::string opcode_ext) const { return cond_info.at(opcode_ext); }
 uint32_t Assembler::get_reg_4bit(const std::string reg) const { return reg[1] - '0'; }
 uint32_t Assembler::get_iflag_1bit(const std::vector<std::string> src2) const { return 0; }
