@@ -16,26 +16,26 @@
 ## 命令フォーマット
 
 * データ処理命令
-  * Type1: \<*Mnemonic*\> Rd, Rn, Src2
+  * Type1: \<*Opcode*\> Rd, Rn, Src2
     * AND, EOR, SUB, RSB, ADD, ADC, SBC, RSC, ORR, BIC, MVN
-  * Type2: \<*Mnemonic*\> Rn, Src2
+  * Type2: \<*Opcode*\> Rn, Src2
     * TST, TEQ, CMP, CMN
-  * Type3: \<*Mnemonic*\> Rd, Src2
+  * Type3: \<*Opcode*\> Rd, Src2
     * MOV
-  * Type4: \<*Mnemonic*\> Rd, Rm, Rs/shamt5
+  * Type4: \<*Opcode*\> Rd, Rm, Rs/shamt5
     * LSL, LSR, ASR, RRX, ROR
 * 乗算命令
-  * Type5: \<*Mnemonic*\> Rd, Rn, Rm
+  * Type5: \<*Opcode*\> Rd, Rn, Rm
     * MUL
-  * Type6: \<*Mnemonic*\> Rd, Rn, Rm, Ra
+  * Type6: \<*Opcode*\> Rd, Rn, Rm, Ra
     * MLA, UMULL, UMLAL, SMULL, SMLAL
 * メモリ命令
-  * Type7: \<*Mnemonic*\> Rd, Adr
+  * Type7: \<*Opcode*\> Rd, Adr
     * STR, LDR, STRB, LDRB, STRH, LDRH, LDRSB, LDRSH
   * Adr Type
     * [Rn, $\pm$Src2] (offset)
     * [Rn, $\pm$Src2]! (preindex)
     * [Rn], $\pm$Src2 (postindex)
 * 分岐命令
-  * Type8: \<*Mnemonic*\> label
+  * Type8: \<*Opcode*\> label
     * B, BL
