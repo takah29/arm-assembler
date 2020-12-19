@@ -9,7 +9,19 @@
 
 #include "utility.hpp"
 
-Assembler::Assembler() {}
+Assembler::Assembler() {
+    // 命令ニモニックと条件ニモニックの情報からオペコード情報を定義
+    for (auto &x : opcodebase_info) {
+        opcode_info[x.first] = x.second;
+        opcode_info[x.first]["cond"] = cond_info.at("al");
+        for (auto &y : cond_info) {
+            auto new_key = x.first + y.first;
+            opcode_info[new_key] = x.second;
+            opcode_info[new_key]["cond"] = y.second;
+        }
+    }
+}
+
 Assembler::~Assembler() {}
 
 uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
@@ -50,7 +62,7 @@ std::vector<std::string> Assembler::tokenize(const std::string asmcode) {
         return tokens;
     }
 
-    auto ftype = Assembler::opcode_info_map.at(opcode_base).at("ftype");
+    auto ftype = Assembler::opcodebase_info.at(opcode_base).at("ftype");
 
     std::vector<std::string> operands_v;
     switch (ftype) {
@@ -122,6 +134,6 @@ std::tuple<std::string, std::string> Assembler::split_opcode(std::string opcode)
     return ret;
 }
 
-uint32_t Assembler::get_cond_4bit(const std::string opcode_ext) const { return cond_map.at(opcode_ext); }
+uint32_t Assembler::get_cond_4bit(const std::string opcode_ext) const { return cond_info.at(opcode_ext); }
 uint32_t Assembler::get_reg_4bit(const std::string reg) const { return reg[1] - '0'; }
 uint32_t Assembler::get_iflag_1bit(const std::vector<std::string> src2) const { return 0; }
