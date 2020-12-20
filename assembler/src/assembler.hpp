@@ -5,6 +5,7 @@
 #include <tuple>
 #include <unordered_map>
 #include <vector>
+#include "types.hpp"
 
 class Assembler {
    public:
@@ -14,7 +15,7 @@ class Assembler {
     uint32_t convert(std::string asmcode, const bool debug_flag);
 
    private:
-    inline static const std::unordered_map<std::string, std::unordered_map<std::string, uint32_t>> opcodebase_info{
+    inline static const OpcodeInfo opcodebase_info{
         {"and", {{"ftype", 1}, {"cmd", 0b0000}}},
         {"eor", {{"ftype", 1}, {"cmd", 0b0001}}},
         {"sub", {{"ftype", 1}, {"cmd", 0b0010}}},
@@ -50,7 +51,7 @@ class Assembler {
         {"eq", 0b0000}, {"ne", 0b0001}, {"cs", 0b0010}, {"hs", 0b0010}, {"cc", 0b0011}, {"lo", 0b0011},
         {"mi", 0b0100}, {"pl", 0b0101}, {"vs", 0b0110}, {"vc", 0b0111}, {"hi", 0b1000}, {"ls", 0b1001},
         {"ge", 0b1010}, {"lt", 0b1011}, {"gt", 0b1100}, {"le", 0b1101}, {"al", 0b1110}};
-    std::unordered_map<std::string, std::unordered_map<std::string, uint32_t>> opcode_info;
+    OpcodeInfo opcode_info;
 
 
     std::vector<std::string> tokenize(const std::string asmcode);
