@@ -8,7 +8,10 @@
 #include "types.hpp"
 
 class Field {
+   protected:
     OpcodeInfo *opcode_info;
+
+    uint32_t get_reg_4bit(const std::string reg) const;
 
    public:
     Field(OpcodeInfo *opcode_info);
@@ -25,6 +28,14 @@ class DataProcessingField : public Field {
     uint32_t rn;     // 4bit
     uint32_t rd;     // 4bit
     uint32_t src2;   // 12bit
+
+    uint32_t get_iflag_1bit(const std::string src2) const;
+    uint32_t get_sflag_1bit(const std::string opcode) const;
+    uint32_t get_cond_4bit(const std::string opcode) const;
+    uint32_t get_cmd_4bit(const std::string opcode) const;
+    constexpr uint32_t get_op_2bit() const;
+    uint32_t get_funct_6bit(const std::string opcode, const std::string src2) const;
+    uint32_t get_src2_12bit(const std::string src2) const;
 
    public:
     DataProcessingField(OpcodeInfo *opcode_info);
