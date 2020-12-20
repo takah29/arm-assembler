@@ -51,4 +51,36 @@ class MultiplicationField : public Field {
     uint32_t rn;                // 4bit
 };
 
+class MemoryField : public Field {
+   public:
+    MemoryField();
+    ~MemoryField();
+
+    void input(std::vector<std::string> asmcode_v);
+    uint32_t output();
+
+   private:
+    uint32_t cond;   // 4bit
+    uint32_t op;     // 2bit
+    uint32_t funct;  // 6bit
+    uint32_t rn;     // 4bit
+    uint32_t rd;     // 4bit
+    uint32_t src2;   // 12bit
+};
+
+class BranchField : public {
+   public:
+    BranchField();
+    ~BranchField();
+
+    void input(std::vector<std::string> asmcode_v);
+    uint32_t output();
+
+   private:
+    uint32_t cond;   // 4bit
+    uint32_t op;     // 2bit
+    uint32_t funct;  // 2bit
+    uint32_t imm24;  // 24bit
+}
+
 #endif
