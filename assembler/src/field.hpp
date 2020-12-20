@@ -2,16 +2,20 @@
 #define _FIELD_H
 
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "types.hpp"
 
 class Field {
+    OpcodeInfo *opcode_info;
+
    public:
+    Field(OpcodeInfo *opcode_info);
     virtual ~Field();
 
-    virtual void input(std::vector<std::string> asmcode_v);
-    virtual uint32_t output();
+    virtual void input(std::vector<std::string> asmcode_v) = 0;
+    virtual uint32_t output() = 0;
 };
 
 class DataProcessingField : public Field {
@@ -23,7 +27,7 @@ class DataProcessingField : public Field {
     uint32_t src2;   // 12bit
 
    public:
-    DataProcessingField();
+    DataProcessingField(OpcodeInfo *opcode_info);
     ~DataProcessingField();
 
     void input(std::vector<std::string> asmcode_v);
@@ -41,7 +45,7 @@ class MultiplicationField : public Field {
     uint32_t rn;                // 4bit
 
    public:
-    MultiplicationField();
+    MultiplicationField(OpcodeInfo *opcode_info);
     ~MultiplicationField();
 
     void input(std::vector<std::string> asmcode_v);
@@ -57,7 +61,7 @@ class MemoryField : public Field {
     uint32_t src2;   // 12bit
 
    public:
-    MemoryField();
+    MemoryField(OpcodeInfo *opcode_info);
     ~MemoryField();
 
     void input(std::vector<std::string> asmcode_v);
@@ -71,7 +75,7 @@ class BranchField : public Field {
     uint32_t imm24;  // 24bit
 
    public:
-    BranchField();
+    BranchField(OpcodeInfo *opcode_info);
     ~BranchField();
 
     void input(std::vector<std::string> asmcode_v);
