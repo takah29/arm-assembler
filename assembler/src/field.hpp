@@ -8,7 +8,6 @@
 
 class Field {
    public:
-    Field();
     virtual ~Field();
 
     virtual void input(std::vector<std::string> asmcode_v);
@@ -16,31 +15,22 @@ class Field {
 };
 
 class DataProcessingField : public Field {
-   public:
-    DataProcessingField();
-    ~DataProcessingField();
-
-    void input(std::vector<std::string> asmcode_v);
-    uint32_t output();
-
-   private:
     uint32_t cond;   // 4bit
     uint32_t op;     // 2bit
     uint32_t funct;  // 6bit
     uint32_t rn;     // 4bit
     uint32_t rd;     // 4bit
     uint32_t src2;   // 12bit
-};
 
-class MultiplicationField : public Field {
    public:
-    MultiplicationField();
-    ~MultiplicationField();
+    DataProcessingField();
+    ~DataProcessingField();
 
     void input(std::vector<std::string> asmcode_v);
     uint32_t output();
+};
 
-   private:
+class MultiplicationField : public Field {
     uint32_t cond;              // 4bit
     uint32_t op;                // 2bit
     uint32_t funct;             // 6bit
@@ -49,38 +39,43 @@ class MultiplicationField : public Field {
     uint32_t rm;                // 4bit
     const uint32_t c = 0b1001;  // 4bit
     uint32_t rn;                // 4bit
-};
 
-class MemoryField : public Field {
    public:
-    MemoryField();
-    ~MemoryField();
+    MultiplicationField();
+    ~MultiplicationField();
 
     void input(std::vector<std::string> asmcode_v);
     uint32_t output();
+};
 
-   private:
+class MemoryField : public Field {
     uint32_t cond;   // 4bit
     uint32_t op;     // 2bit
     uint32_t funct;  // 6bit
     uint32_t rn;     // 4bit
     uint32_t rd;     // 4bit
     uint32_t src2;   // 12bit
+
+   public:
+    MemoryField();
+    ~MemoryField();
+
+    void input(std::vector<std::string> asmcode_v);
+    uint32_t output();
 };
 
 class BranchField : public Field {
+    uint32_t cond;   // 4bit
+    uint32_t op;     // 2bit
+    uint32_t funct;  // 2bit
+    uint32_t imm24;  // 24bit
+
    public:
     BranchField();
     ~BranchField();
 
     void input(std::vector<std::string> asmcode_v);
     uint32_t output();
-
-   private:
-    uint32_t cond;   // 4bit
-    uint32_t op;     // 2bit
-    uint32_t funct;  // 2bit
-    uint32_t imm24;  // 24bit
 };
 
 #endif
