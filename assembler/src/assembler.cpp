@@ -25,20 +25,20 @@ Assembler::Assembler() {
         for (auto &y : cond_info) {
             // 条件命令の登録
             // TST, TEQ, CMP, CMNは無条件にS = 1
-            auto new_key = x.first + y.first;
-            opcode_info[new_key] = x.second;
-            opcode_info[new_key]["cond"] = y.second;
+            auto opcode_ex = x.first + y.first;
+            opcode_info[opcode_ex] = x.second;
+            opcode_info[opcode_ex]["cond"] = y.second;
             if (x.second.at("ftype") != 2) {
-                opcode_info[new_key]["S"] = 0b0;
+                opcode_info[opcode_ex]["S"] = 0b0;
             } else {
-                opcode_info[new_key]["S"] = 0b1;
+                opcode_info[opcode_ex]["S"] = 0b1;
             }
 
             // 条件命令 + S命令の登録
             if (x.second.at("ftype") != 2) {
-                opcode_info[new_key + 's'] = x.second;
-                opcode_info[new_key + 's']["cond"] = y.second;
-                opcode_info[new_key + 's']["S"] = 0b1;
+                opcode_info[opcode_ex + 's'] = x.second;
+                opcode_info[opcode_ex + 's']["cond"] = y.second;
+                opcode_info[opcode_ex + 's']["S"] = 0b1;
             }
         }
     }
