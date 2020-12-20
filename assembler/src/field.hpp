@@ -30,8 +30,8 @@ class DataProcessingField : public Field {
     DataProcessingField(OpcodeInfo *opcode_info);
     ~DataProcessingField();
 
-    void input(std::vector<std::string> asmcode_v);
-    uint32_t output();
+    void input(std::vector<std::string> asmcode_v) override;
+    uint32_t output() override;
 };
 
 class MultiplicationField : public Field {
@@ -48,8 +48,8 @@ class MultiplicationField : public Field {
     MultiplicationField(OpcodeInfo *opcode_info);
     ~MultiplicationField();
 
-    void input(std::vector<std::string> asmcode_v);
-    uint32_t output();
+    void input(std::vector<std::string> asmcode_v) override;
+    uint32_t output() override;
 };
 
 class MemoryField : public Field {
@@ -64,8 +64,8 @@ class MemoryField : public Field {
     MemoryField(OpcodeInfo *opcode_info);
     ~MemoryField();
 
-    void input(std::vector<std::string> asmcode_v);
-    uint32_t output();
+    void input(std::vector<std::string> asmcode_v) override;
+    uint32_t output() override;
 };
 
 class BranchField : public Field {
@@ -78,8 +78,8 @@ class BranchField : public Field {
     BranchField(OpcodeInfo *opcode_info);
     ~BranchField();
 
-    void input(std::vector<std::string> asmcode_v);
-    uint32_t output();
+    void input(std::vector<std::string> asmcode_v) override;
+    uint32_t output() override;
 };
 
 #endif
