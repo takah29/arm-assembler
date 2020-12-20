@@ -42,13 +42,19 @@ void print(std::vector<std::vector<T>>& df) {
 }
 
 template <typename T>
-T rotl(const T n) {
-    return (n << 1) | (n >> (sizeof(T) - 1));
+T rotl(const T n, const uint32_t s) {
+    if (!(0 < s < sizeof(T))) {
+        throw std::runtime_error("the shift size is too large.");
+    }
+    return (n << s) | (n >> (sizeof(T) - s));
 }
 
 template <typename T>
-T rotr(const T n) {
-    return (n >> 1) | (n << (sizeof(T) - 1));
+T rotr(const T n, const uint32_t s) {
+    if (!(0 < s < sizeof(T))) {
+        throw std::runtime_error("the shift size is too large.");
+    }
+    return (n >> s) | (n << (sizeof(T) - s));
 }
 
 std::string strip(std::string& s, const std::string trim_str);
