@@ -30,8 +30,8 @@ uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
     auto tokens = tokenize(asmcode);
 
     std::string opcode = tokens[0];
-    if (opcode.size() > 5) {
-        throw std::runtime_error("opcode string is too long.");
+    if (opcode.size() == 0 or 5 < opcode.size()) {
+        throw std::runtime_error("Invalied opecode length.");
     }
 
     auto opcode_base = opcode.substr(0, 3);
@@ -114,6 +114,3 @@ std::vector<std::string> Assembler::split_operands(const std::string operands, c
     return result;
 }
 
-uint32_t Assembler::get_cond_4bit(const std::string opcode_ext) const { return cond_info.at(opcode_ext); }
-uint32_t Assembler::get_reg_4bit(const std::string reg) const { return reg[1] - '0'; }
-uint32_t Assembler::get_iflag_1bit(const std::vector<std::string> src2) const { return 0; }
