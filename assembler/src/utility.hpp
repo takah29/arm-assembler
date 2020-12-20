@@ -40,9 +40,21 @@ void print(std::vector<std::vector<T>>& df) {
         print(vec);
     }
 }
+
+template <typename T>
+T rotl(const T n) {
+    return (n << 1) | (n >> (sizeof(T) - 1));
+}
+
+template <typename T>
+T rotr(const T n) {
+    return (n >> 1) | (n << (sizeof(T) - 1));
+}
+
 std::string strip(std::string& s, const std::string trim_str);
 std::string unit_space(const std::string s);
 std::vector<size_t> find_all(const std::string str, const std::string substr);
 std::vector<std::string> split_reg(const std::string& s, const std::string regex_delim);
 std::string replace_all(const std::string str, const std::string from_str, const std::string to_str);
+
 #endif
