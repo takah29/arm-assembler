@@ -18,7 +18,6 @@ Assembler::Assembler() {
             auto new_key = x.first + y.first;
             opcode_info[new_key] = x.second;
             opcode_info[new_key]["cond"] = y.second;
-            print(new_key, opcode_info[new_key]["cond"]);
         }
     }
 }

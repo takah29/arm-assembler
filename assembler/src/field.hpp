@@ -68,7 +68,7 @@ class MemoryField : public Field {
     uint32_t src2;   // 12bit
 };
 
-class BranchField : public {
+class BranchField : public Field {
    public:
     BranchField();
     ~BranchField();
@@ -81,6 +81,6 @@ class BranchField : public {
     uint32_t op;     // 2bit
     uint32_t funct;  // 2bit
     uint32_t imm24;  // 24bit
-}
+};
 
 #endif
