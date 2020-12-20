@@ -12,12 +12,34 @@
 Assembler::Assembler() {
     // 命令ニモニックと条件ニモニックの定義からオペコード情報を定義
     for (auto &x : opcodebase_info) {
+        // 基本命令の登録
         opcode_info[x.first] = x.second;
         opcode_info[x.first]["cond"] = cond_info.at("al");
+        opcode_info[x.first]["S"] = 0b0;
+
+        // S命令の登録
+        opcode_info[x.first + 's'] = x.second;
+        opcode_info[x.first + 's']["cond"] = cond_info.at("al");
+        opcode_info[x.first + 's']["S"] = 0b1;
+
         for (auto &y : cond_info) {
+            // 条件命令の登録
+            // TST, TEQ, CMP, CMNは無条件にS = 1
             auto new_key = x.first + y.first;
             opcode_info[new_key] = x.second;
             opcode_info[new_key]["cond"] = y.second;
+            if (x.second.at("ftype") != 2) {
+                opcode_info[new_key]["S"] = 0b0;
+            } else {
+                opcode_info[new_key]["S"] = 0b1;
+            }
+
+            // 条件命令 + S命令の登録
+            if (x.second.at("ftype") != 2) {
+                opcode_info[new_key + 's'] = x.second;
+                opcode_info[new_key + 's']["cond"] = y.second;
+                opcode_info[new_key + 's']["S"] = 0b1;
+            }
         }
     }
 }
@@ -113,4 +135,3 @@ std::vector<std::string> Assembler::split_operands(const std::string operands, c
 
     return result;
 }
-
