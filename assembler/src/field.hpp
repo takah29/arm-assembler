@@ -37,6 +37,8 @@ class DataProcessingField : public Field {
     uint32_t get_funct_6bit(const std::string opcode, const std::string src2) const;
     uint32_t get_src2_12bit(const std::string src2) const;
 
+    uint32_t encode_imm32(const uint32_t imm32) const;
+
    public:
     DataProcessingField(OpcodeInfo *opcode_info);
     ~DataProcessingField();

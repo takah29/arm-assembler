@@ -1,5 +1,7 @@
 #include "field.hpp"
 
+#include "utility.hpp"
+
 Field::Field(OpcodeInfo *opcode_info) : opcode_info(opcode_info) {}
 Field::~Field() {}
 
@@ -37,6 +39,24 @@ uint32_t DataProcessingField::get_funct_6bit(const std::string opcode, const std
 };
 
 uint32_t DataProcessingField::get_src2_12bit(const std::string src2) const {}
+
+uint32_t DataProcessingField::encode_imm32(const uint32_t imm32) const {
+    // rot(4bit), imm8(8bit)にエンコードできない場合はエラー
+    uint32_t rot4 = 0, imm8 = 0;
+    uint32_t mask8 = 0b11111111;
+
+    for (size_t i = 0; i < 16; i++) {
+        auto shift_mask8 = rotr(mask8, 2 * i);
+        if ((imm32 & shift_mask8) == imm32) {
+            rot4 = i;
+            imm8 = rotl(imm32, 2 * i);
+            return imm8 | (rot4 << 8);
+        }
+    }
+
+    // エンコードできない
+    throw std::runtime_error("cannot encode the immediate.");
+}
 
 void DataProcessingField::input(std::vector<std::string> asmcode_v) {
     auto opcode = asmcode_v[0];
