@@ -56,10 +56,6 @@ uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
         throw std::runtime_error("Invalied opecode length.");
     }
 
-    auto opcode_base = opcode.substr(0, 3);
-
-    std::vector<std::string> operands(tokens.begin() + 1, tokens.end());
-
     uint32_t machine_code = 0;
     return machine_code;
 }
