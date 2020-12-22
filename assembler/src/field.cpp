@@ -41,7 +41,7 @@ uint32_t DataProcessingField::get_funct_6bit(const std::string opcode, const std
 uint32_t DataProcessingField::get_src2_12bit(const std::string src2) const {}
 
 uint32_t DataProcessingField::encode_imm32(const uint32_t imm32) const {
-    // rot(4bit), imm8(8bit)にエンコードできない場合はエラー
+    // rot(4bit), imm8(8bit)にエンコードできない数値が入力された場合はエラー
     uint32_t rot4 = 0, imm8 = 0;
     uint32_t mask8 = 0b11111111;
 
@@ -54,7 +54,6 @@ uint32_t DataProcessingField::encode_imm32(const uint32_t imm32) const {
         }
     }
 
-    // エンコードできない
     throw std::runtime_error("cannot encode the immediate.");
 }
 
