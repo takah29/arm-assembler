@@ -55,7 +55,17 @@ uint32_t DataProcessingField::get_funct_6bit(const std::string opcode, const std
     return funct;
 };
 
-uint32_t DataProcessingField::get_src2_12bit(const std::string src2) const {
+uint32_t DataProcessingField::get_sh_2bit(const std::string opcode) const {
+    uint32_t ret = 0;
+    auto cmd = opcode_info->at(opcode).at("cmd");
+    if (cmd == 0b1101) {
+        ret = get_sh_2bit(opcode);
+    } else {
+        ret = 0b00;
+    }
+
+    return ret;
+}
     // Src2 = <imm or Rm>: supported
     // Src2 = Rm, <shifter> <imm or Rn>: unsopported
 
