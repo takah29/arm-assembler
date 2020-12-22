@@ -66,6 +66,8 @@ uint32_t DataProcessingField::get_sh_2bit(const std::string opcode) const {
 
     return ret;
 }
+
+uint32_t DataProcessingField::get_src2_12bit(const std::string opcode, const std::string src2) const {
     // Src2 = <imm or Rm>: supported
     // Src2 = Rm, <shifter> <imm or Rn>: unsopported
 
@@ -79,8 +81,10 @@ uint32_t DataProcessingField::get_sh_2bit(const std::string opcode) const {
         }
         ret = encode_imm32(imm32);
     } else if (src2[0] == 'r') {
-        uint32_t rm = get_reg_4bit(src2);
         uint32_t shamt5 = 0b00000;
+        uint32_t sh = get_sh_2bit(opcode);
+        uint32_t rm = get_reg_4bit(src2);
+        ret = rm | (0b0 << 4) | (sh << 5) | (shamt5 << 7);
     }
 
     return ret;
@@ -115,7 +119,7 @@ void DataProcessingField::input(std::vector<std::string> asmcode_v) {
             funct = get_funct_6bit(opcode, operands[2]);
             rn = get_reg_4bit(operands[1]);
             rd = get_reg_4bit(operands[0]);
-            src2 = get_src2_12bit(operands[2]);
+            src2 = get_src2_12bit(opcode, operands[2]);
             break;
         case 2:  // Type2: Opcode Rn, Src2
             break;
