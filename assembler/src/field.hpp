@@ -35,7 +35,9 @@ class DataProcessingField : public Field {
     uint32_t get_cmd_4bit(const std::string opcode) const;
     constexpr uint32_t get_op_2bit() const;
     uint32_t get_funct_6bit(const std::string opcode, const std::string src2) const;
-    uint32_t get_src2_12bit(const std::string src2) const;
+
+    uint32_t get_sh_2bit(const std::string opcode) const;
+    uint32_t get_src2_12bit(const std::string opcode, const std::string src2) const;
 
     uint32_t encode_imm32(const uint32_t imm32) const;
 

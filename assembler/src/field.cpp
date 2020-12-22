@@ -59,7 +59,7 @@ uint32_t DataProcessingField::get_sh_2bit(const std::string opcode) const {
     uint32_t ret = 0;
     auto cmd = opcode_info->at(opcode).at("cmd");
     if (cmd == 0b1101) {
-        ret = get_sh_2bit(opcode);
+        ret = opcode_info->at(opcode).at("sh");
     } else {
         ret = 0b00;
     }
