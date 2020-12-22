@@ -38,7 +38,10 @@ class DataProcessingField : public Field {
 
     uint32_t get_shamt5_5bit(const std::string opcode, const std::string src2) const;
     uint32_t get_sh_2bit(const std::string opcode) const;
-    uint32_t get_src2_12bit(const std::string opcode, const std::string src2) const;
+    uint32_t get_src2_12bit_imm(const std::string src2) const;
+    uint32_t get_src2_12bit_reg_shimm(const std::string opcode, const std::string src2) const;
+    uint32_t get_src2_12bit_shreg(const std::string opcode, const std::vector<std::string> operands) const;
+    uint32_t get_src2_12bit(const std::string opcode, const std::vector<std::string> operands) const;
 
     uint32_t encode_imm32(const uint32_t imm32) const;
 
