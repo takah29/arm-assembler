@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "field.hpp"
 #include "types.hpp"
 
 class Assembler {
@@ -62,6 +63,8 @@ class Assembler {
     std::vector<std::string> tokenize(const std::string asmcode);
     std::vector<std::string> split_operands(const std::string operandes, const size_t n_operands);
     std::tuple<std::string, std::string> split_opcode(std::string opcode);
+
+    DataProcessingField *dpf_ptr;
 };
 
 #endif
