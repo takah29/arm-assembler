@@ -27,7 +27,7 @@ DataProcessingField::DataProcessingField(OpcodeInfo *opcode_info)
 DataProcessingField::~DataProcessingField() {}
 
 uint32_t DataProcessingField::get_iflag_1bit(const std::string opcode, const std::string src2) const {
-    uint32_t ret;
+    uint32_t ret = 0;
     auto cmd = opcode_info->at(opcode).at("cmd");
     if (cmd == 0b1101 and opcode.substr(0, 3) != "mov") {
         ret = 0b0;
@@ -53,7 +53,7 @@ uint32_t DataProcessingField::get_funct_6bit(const std::string opcode, const std
     auto sflag = get_sflag_1bit(opcode);
     auto funct = sflag | (cmd << 1) | (iflag << 5);
     return funct;
-};
+}
 
 uint32_t DataProcessingField::get_sh_2bit(const std::string opcode) const {
     uint32_t ret = 0;
@@ -69,9 +69,9 @@ uint32_t DataProcessingField::get_sh_2bit(const std::string opcode) const {
     // Src2 = <imm or Rm>: supported
     // Src2 = Rm, <shifter> <imm or Rn>: unsopported
 
-    uint32_t ret;
+    uint32_t ret = 0;
     if (src2[0] == '#') {
-        uint32_t imm32;
+        uint32_t imm32 = 0;
         if (src2.substr(1, 2) == "0x") {
             imm32 = std::stoi(src2.substr(1), nullptr, 16);
         } else {
