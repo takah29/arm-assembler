@@ -55,6 +55,17 @@ uint32_t DataProcessingField::get_funct_6bit(const std::string opcode, const std
     return funct;
 }
 
+uint32_t DataProcessingField::get_shamt5_5bit(const std::string opcode, const std::string src2) const {
+    uint32_t ret = 0;
+    auto cmd = opcode_info->at(opcode).at("cmd");
+    if (cmd == 0b1101 and src2[0] == '#') {
+        ret = std::stoi(src2.substr(1));
+    } else {
+        ret = 0b00000;
+    }
+    return ret;
+}
+
 uint32_t DataProcessingField::get_sh_2bit(const std::string opcode) const {
     uint32_t ret = 0;
     auto cmd = opcode_info->at(opcode).at("cmd");
