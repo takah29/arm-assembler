@@ -26,7 +26,16 @@ DataProcessingField::DataProcessingField(OpcodeInfo *opcode_info)
     : Field(opcode_info), cond(0), op(0), funct(0), rn(0), rd(0), src2(0) {}
 DataProcessingField::~DataProcessingField() {}
 
-uint32_t DataProcessingField::get_iflag_1bit(const std::string src2) const { return (src2[0] == '#') ? 0b1 : 0b0; }
+uint32_t DataProcessingField::get_iflag_1bit(const std::string opcode, const std::string src2) const {
+    uint32_t ret;
+    auto cmd = opcode_info->at(opcode).at("cmd");
+    if (cmd == 0b1101 and opcode.substr(0, 3) != "mov") {
+        ret = 0b0;
+    } else {
+        ret = (src2[0] == '#') ? 0b1 : 0b0;
+    }
+    return ret;
+}
 
 uint32_t DataProcessingField::get_sflag_1bit(const std::string opcode) const { return opcode_info->at(opcode).at("S"); }
 
@@ -39,14 +48,33 @@ uint32_t DataProcessingField::get_cmd_4bit(const std::string opcode) const { ret
 constexpr uint32_t DataProcessingField::get_op_2bit() const { return 0b00; }
 
 uint32_t DataProcessingField::get_funct_6bit(const std::string opcode, const std::string src2) const {
-    auto iflag = get_iflag_1bit(src2);
+    auto iflag = get_iflag_1bit(opcode, src2);
     auto cmd = get_cmd_4bit(opcode);
     auto sflag = get_sflag_1bit(opcode);
     auto funct = sflag | (cmd << 1) | (iflag << 5);
     return funct;
 };
 
-uint32_t DataProcessingField::get_src2_12bit(const std::string src2) const {}
+uint32_t DataProcessingField::get_src2_12bit(const std::string src2) const {
+    // Src2 = <imm or Rm>: supported
+    // Src2 = Rm, <shifter> <imm or Rn>: unsopported
+
+    uint32_t ret;
+    if (src2[0] == '#') {
+        uint32_t imm32;
+        if (src2.substr(1, 2) == "0x") {
+            imm32 = std::stoi(src2.substr(1), nullptr, 16);
+        } else {
+            imm32 = std::stoi(src2.substr(1));
+        }
+        ret = encode_imm32(imm32);
+    } else if (src2[0] == 'r') {
+        uint32_t rm = get_reg_4bit(src2);
+        uint32_t shamt5 = 0b00000;
+    }
+
+    return ret;
+}
 
 uint32_t DataProcessingField::encode_imm32(const uint32_t imm32) const {
     // rot(4bit), imm8(8bit)にエンコードできない数値が入力された場合はエラー

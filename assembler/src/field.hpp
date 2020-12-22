@@ -29,7 +29,7 @@ class DataProcessingField : public Field {
     uint32_t rd;     // 4bit
     uint32_t src2;   // 12bit
 
-    uint32_t get_iflag_1bit(const std::string src2) const;
+    uint32_t get_iflag_1bit(const std::string opcode, const std::string src2) const;
     uint32_t get_sflag_1bit(const std::string opcode) const;
     uint32_t get_cond_4bit(const std::string opcode) const;
     uint32_t get_cmd_4bit(const std::string opcode) const;
