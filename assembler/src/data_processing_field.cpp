@@ -146,7 +146,7 @@ void DataProcessingField::input(std::vector<std::string> asmcode_v) {
     cond = get_cond_4bit(opcode);
     op = 0b00;
 
-    auto ftype = opcode_info->at(opcode).at("ftype");
+    auto ftype = get_ftype(opcode);
     switch (ftype) {
         case 1:  // Type1: Opcode Rd, Rn, Src2
             funct = get_funct_6bit(opcode, operands[2]);
