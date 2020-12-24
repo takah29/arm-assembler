@@ -23,22 +23,6 @@ class Field {
     virtual void show_field() = 0;
 };
 
-class MemoryField : public Field {
-    uint32_t cond;   // 4bit
-    uint32_t op;     // 2bit
-    uint32_t funct;  // 6bit
-    uint32_t rn;     // 4bit
-    uint32_t rd;     // 4bit
-    uint32_t src2;   // 12bit
-
-   public:
-    MemoryField(OpcodeInfo *opcode_info);
-    ~MemoryField();
-
-    void input(std::vector<std::string> asmcode_v) override;
-    uint32_t output() override;
-};
-
 class BranchField : public Field {
     uint32_t cond;   // 4bit
     uint32_t op;     // 2bit
