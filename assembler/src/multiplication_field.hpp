@@ -23,6 +23,8 @@ class MultiplicationField : public Field {
 
     void input(std::vector<std::string> asmcode_v) override;
     uint32_t output() override;
+    void clear_field() override;
+    void show_field() override;
 };
 
 #endif
