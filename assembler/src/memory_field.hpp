@@ -2,7 +2,6 @@
 #define _MEMORY_FIELD_H
 
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 #include "field.hpp"
