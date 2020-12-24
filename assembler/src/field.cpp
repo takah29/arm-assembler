@@ -187,3 +187,5 @@ uint32_t DataProcessingField::output() {
     uint32_t field = src2 | (rd << 12) | (rn << 16) | (funct << 20) | (op << 26) | (cond << 28);
     return field;
 }
+
+void DataProcessingField::clear_field() { cond = op = funct = rn = rd = src2 = 0; }
