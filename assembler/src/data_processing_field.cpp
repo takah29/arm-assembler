@@ -143,7 +143,7 @@ uint32_t DataProcessingField::encode_imm32(const uint32_t imm32) const {
 void DataProcessingField::input(std::vector<std::string> asmcode_v) {
     auto opcode = asmcode_v[0];
     std::vector<std::string> operands(asmcode_v.begin() + 1, asmcode_v.end());
-    cond = opcode_info->at(opcode).at("cond");
+    cond = get_cond_4bit(opcode);
     op = 0b00;
 
     auto ftype = opcode_info->at(opcode).at("ftype");
@@ -178,8 +178,7 @@ void DataProcessingField::input(std::vector<std::string> asmcode_v) {
 }
 
 uint32_t DataProcessingField::output() {
-    uint32_t field = src2 | (rd << 12) | (rn << 16) | (funct << 20) | (op << 26) | (cond << 28);
-    return field;
+    return src2 | (rd << 12) | (rn << 16) | (funct << 20) | (op << 26) | (cond << 28);
 }
 
 void DataProcessingField::clear_field() { cond = op = funct = rn = rd = src2 = 0; }
