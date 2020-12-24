@@ -1,5 +1,7 @@
 #include "field.hpp"
 
+#include <bitset>
+
 #include "utility.hpp"
 
 Field::Field(OpcodeInfo *opcode_info) : opcode_info(opcode_info) {}
@@ -189,3 +191,9 @@ uint32_t DataProcessingField::output() {
 }
 
 void DataProcessingField::clear_field() { cond = op = funct = rn = rd = src2 = 0; }
+
+void DataProcessingField::show_field() {
+    std::cout << "cond = " << std::bitset<4>(cond) << ", op = " << std::bitset<2>(op)
+              << ", funct = " << std::bitset<6>(funct) << ", rn = " << std::bitset<4>(rn)
+              << ", rd = " << std::bitset<4>(rd) << ", src2 = " << std::bitset<12>(src2) << std::endl;
+}

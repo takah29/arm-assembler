@@ -61,6 +61,7 @@ uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
     uint32_t machine_code = 0;
     if (1 <= opcode_info.at(opcode).at("ftype") and opcode_info.at(opcode).at("ftype") <= 4) {
         dpf_ptr->input(tokens);
+        dpf_ptr->show_field();
         machine_code = dpf_ptr->output();
     } else {
         machine_code = 0;
