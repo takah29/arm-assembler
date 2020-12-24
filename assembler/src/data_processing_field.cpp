@@ -21,10 +21,6 @@ uint32_t DataProcessingField::get_iflag_1bit(const std::string opcode, const std
 
 uint32_t DataProcessingField::get_sflag_1bit(const std::string opcode) const { return opcode_info->at(opcode).at("S"); }
 
-uint32_t DataProcessingField::get_cond_4bit(const std::string opcode) const {
-    return opcode_info->at(opcode).at("cond");
-}
-
 uint32_t DataProcessingField::get_cmd_4bit(const std::string opcode) const { return opcode_info->at(opcode).at("cmd"); }
 
 constexpr uint32_t DataProcessingField::get_op_2bit() const { return 0b00; }
