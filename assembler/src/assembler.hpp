@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "field.hpp"
+#include "data_processing_field.hpp"
 #include "types.hpp"
 
 class Assembler {
