@@ -23,18 +23,4 @@ class Field {
     virtual void show_field() = 0;
 };
 
-class BranchField : public Field {
-    uint32_t cond;   // 4bit
-    uint32_t op;     // 2bit
-    uint32_t funct;  // 2bit
-    uint32_t imm24;  // 24bit
-
-   public:
-    BranchField(OpcodeInfo *opcode_info);
-    ~BranchField();
-
-    void input(std::vector<std::string> asmcode_v) override;
-    uint32_t output() override;
-};
-
 #endif
