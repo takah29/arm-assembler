@@ -23,24 +23,6 @@ class Field {
     virtual void show_field() = 0;
 };
 
-class MultiplicationField : public Field {
-    uint32_t cond;              // 4bit
-    uint32_t op;                // 2bit
-    uint32_t funct;             // 6bit
-    uint32_t rd;                // 4bit
-    uint32_t ra;                // 4bit
-    uint32_t rm;                // 4bit
-    const uint32_t c = 0b1001;  // 4bit
-    uint32_t rn;                // 4bit
-
-   public:
-    MultiplicationField(OpcodeInfo *opcode_info);
-    ~MultiplicationField();
-
-    void input(std::vector<std::string> asmcode_v) override;
-    uint32_t output() override;
-};
-
 class MemoryField : public Field {
     uint32_t cond;   // 4bit
     uint32_t op;     // 2bit
