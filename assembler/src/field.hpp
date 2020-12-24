@@ -11,6 +11,7 @@ class Field {
     OpcodeInfo *opcode_info;
 
     uint32_t get_reg_4bit(const std::string reg) const;
+    uint32_t get_cond_4bit(const std::string opcode) const;
 
    public:
     Field(OpcodeInfo *opcode_info);
