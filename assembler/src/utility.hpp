@@ -46,7 +46,7 @@ T rotl(const T n, const uint32_t s) {
     if (!(0 < s < sizeof(T))) {
         throw std::runtime_error("the shift size is too large.");
     }
-    return (n << s) | (n >> (sizeof(T) - s));
+    return (n << s) | (n >> (sizeof(T) * 8 - s));
 }
 
 template <typename T>
@@ -54,7 +54,7 @@ T rotr(const T n, const uint32_t s) {
     if (!(0 < s < sizeof(T))) {
         throw std::runtime_error("the shift size is too large.");
     }
-    return (n >> s) | (n << (sizeof(T) - s));
+    return (n >> s) | (n << (sizeof(T) * 8 - s));
 }
 
 std::string strip(std::string& s, const std::string trim_str);
