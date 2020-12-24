@@ -90,8 +90,17 @@ uint32_t DataProcessingField::get_src2_12bit_imm(const std::string src2) const {
     return encode_imm32(imm32);
 }
 
-uint32_t DataProcessingField::get_src2_12bit_reg_shimm(const std::string opcode,
-                                                       const std::vector<std::string> operands) const {
+uint32_t DataProcessingField::get_src2_12bit_reg(const std::string opcode,
+                                                 const std::vector<std::string> operands) const {
+    auto src2 = operands.back();
+    uint32_t shamt5 = get_shamt5_5bit(opcode, src2);
+    uint32_t sh = get_sh_2bit(opcode);
+    uint32_t rm = get_reg_4bit(src2);
+    return rm | (0b0 << 4) | (sh << 5) | (shamt5 << 7);
+}
+
+uint32_t DataProcessingField::get_src2_12bit_shimm(const std::string opcode,
+                                                   const std::vector<std::string> operands) const {
     auto src2 = operands.back();
     auto rm = operands[1];
     uint32_t shamt5 = get_shamt5_5bit(opcode, src2);
@@ -123,10 +132,10 @@ uint32_t DataProcessingField::get_src2_12bit(const std::string opcode, const std
         ret = get_src2_12bit_imm(src2);
     } else if (cmd != 0b1101) {
         // 通常命令のレジスタモード(ex. add r5, r6, r7)
-        ret = get_src2_12bit_reg_shimm(opcode, operands);
+        ret = get_src2_12bit_reg(opcode, operands);
     } else if (src2[0] == '#') {
         // シフト命令の直値モード(ex. lsl r0, r9, #7)
-        ret = get_src2_12bit_reg_shimm(opcode, operands);
+        ret = get_src2_12bit_shimm(opcode, operands);
     } else {
         // シフト命令のレジスタモード(ex. lsr r4, r8, r6)
         ret = get_src2_12bit_shreg(opcode, operands);
