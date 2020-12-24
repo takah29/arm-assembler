@@ -21,3 +21,5 @@ uint32_t Field::get_reg_4bit(const std::string reg) const {
 }
 
 uint32_t Field::get_cond_4bit(const std::string opcode) const { return opcode_info->at(opcode).at("cond"); }
+
+uint32_t Field::get_ftype(const std::string opcode) const { return opcode_info->at(opcode).at("ftype"); }
