@@ -1,2 +1,2 @@
 assembler/assembler
-assembler/src/*.o
+*.o
