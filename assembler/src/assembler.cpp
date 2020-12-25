@@ -45,7 +45,8 @@ Assembler::Assembler() {
         }
     }
 
-    dpf_ptr = new DataProcessingField(&opcode_info);
+    // Fieldクラスの設定
+    fields[0] = new DataProcessingField(&opcode_info);
 }
 
 Assembler::~Assembler() {}
@@ -60,12 +61,15 @@ uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
     }
 
     uint32_t machine_code = 0;
-    if (1 <= opcode_info.at(opcode).at("ftype") and opcode_info.at(opcode).at("ftype") <= 4) {
-        dpf_ptr->input(tokens);
-        dpf_ptr->show_field();
-        machine_code = dpf_ptr->output();
-    } else {
+    auto ftype = opcode_info.at(opcode).at("ftype");
+    if (1 <= ftype and ftype <= 4) {
+        fields[0]->input(tokens);
+        fields[0]->show_field();
+        machine_code = fields[0]->output();
+    } else if (5 <= ftype and ftype <= 6) {
         machine_code = 0;
+    } else {
+        throw std::runtime_error("unsupported format type.");
     }
 
     return machine_code;
