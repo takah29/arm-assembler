@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
     string asmcode;
     while (getline(infile, asmcode)) {
         asmcode = unit_space(strip(asmcode, " "));
-        if (asmcode == "" or asmcode[0] == '#') {
+        if (asmcode == "" or asmcode.substr(0, 2) == "//") {
             continue;
         }
         auto machine_code = assembler.convert(asmcode, debug_flag);
