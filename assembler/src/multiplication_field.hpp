@@ -17,6 +17,10 @@ class MultiplicationField : public Field {
     const uint32_t c = 0b1001;  // 4bit
     uint32_t rn;                // 4bit
 
+    uint32_t get_sflag_1bit(const std::string opcode) const;
+    uint32_t get_cmd_3bit(const std::string opcode) const;
+    uint32_t get_funct_6bit(const std::string opcode) const;
+
    public:
     MultiplicationField(OpcodeInfo *opcode_info);
     ~MultiplicationField();
