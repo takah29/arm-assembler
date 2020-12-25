@@ -7,49 +7,59 @@
 #include <tuple>
 #include <vector>
 
+#include "data_processing_field.hpp"
+#include "multiplication_field.hpp"
 #include "utility.hpp"
 
 Assembler::Assembler() {
     // 命令ニモニックと条件ニモニックの定義からオペコード情報を定義
     for (auto &x : opcodebase_info) {
+        auto ftype = x.second.at("ftype");
         // 基本命令の登録
         opcode_info[x.first] = x.second;
         opcode_info[x.first]["cond"] = cond_info.at("al");
-        if (x.second.at("ftype") != 2) {
+
+        if (ftype == 2) {
+            // TST, TEQ, CMP, CMNは無条件にS = 1
+            opcode_info[x.first]["S"] = 0b1;
+        } else if (1 <= ftype and ftype <= 6) {
             opcode_info[x.first]["S"] = 0b0;
-            // S命令の登録
+
+            // 基本命令のS命令を登録
             opcode_info[x.first + 's'] = x.second;
             opcode_info[x.first + 's']["cond"] = cond_info.at("al");
             opcode_info[x.first + 's']["S"] = 0b1;
-        } else {
-            // TST, TEQ, CMP, CMNは無条件にS = 1
-            opcode_info[x.first]["S"] = 0b1;
         }
 
         for (auto &y : cond_info) {
             // 条件命令の登録
-            // TST, TEQ, CMP, CMNは無条件にS = 1
             auto opcode_ex = x.first + y.first;
             opcode_info[opcode_ex] = x.second;
             opcode_info[opcode_ex]["cond"] = y.second;
-            if (x.second.at("ftype") != 2) {
+
+            if (ftype == 2) {
+                // TST, TEQ, CMP, CMNは無条件にS = 1
+                opcode_info[opcode_ex]["S"] = 0b1;
+            } else if (1 <= ftype and ftype <= 6) {
                 opcode_info[opcode_ex]["S"] = 0b0;
 
-                // S命令の登録
+                // 条件命令のS命令を登録
                 opcode_info[opcode_ex + 's'] = x.second;
-                opcode_info[opcode_ex + 's']["cond"] = y.second;
+                opcode_info[opcode_ex + 's']["cond"] = cond_info.at("al");
                 opcode_info[opcode_ex + 's']["S"] = 0b1;
-            } else {
-                opcode_info[opcode_ex]["S"] = 0b1;
             }
         }
     }
 
     // Fieldクラスの設定
     fields[0] = new DataProcessingField(&opcode_info);
+    fields[1] = new MultiplicationField(&opcode_info);
 }
 
-Assembler::~Assembler() {}
+Assembler::~Assembler() {
+    delete fields[0];
+    delete fields[1];
+}
 
 uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
     std::transform(asmcode.begin(), asmcode.end(), asmcode.begin(), ::tolower);
@@ -67,7 +77,9 @@ uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
         fields[0]->show_field();
         machine_code = fields[0]->output();
     } else if (5 <= ftype and ftype <= 6) {
-        machine_code = 0;
+        fields[1]->input(tokens);
+        fields[1]->show_field();
+        machine_code = fields[1]->output();
     } else {
         throw std::runtime_error("unsupported format type.");
     }
