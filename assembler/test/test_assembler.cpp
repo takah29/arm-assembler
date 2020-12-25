@@ -52,3 +52,15 @@ TEST_F(AssemblerTest, correct_type4_input_test) {
     auto expected_data = loadtxt("input/input_field_type_4_ans.txt");
     assert_vec_eq(input_data, expected_data);
 }
+
+TEST_F(AssemblerTest, correct_type5_input_test) {
+    auto input_data = loadtxt("input/input_field_type_5.txt");
+    auto expected_data = loadtxt("input/input_field_type_5_ans.txt");
+    assert_vec_eq(input_data, expected_data);
+}
+
+TEST_F(AssemblerTest, correct_type6_input_test) {
+    auto input_data = loadtxt("input/input_field_type_6.txt");
+    auto expected_data = loadtxt("input/input_field_type_6_ans.txt");
+    assert_vec_eq(input_data, expected_data);
+}
