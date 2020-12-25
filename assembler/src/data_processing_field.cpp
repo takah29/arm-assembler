@@ -57,9 +57,9 @@ uint32_t DataProcessingField::get_sh_2bit(const std::string opcode) const {
 uint32_t DataProcessingField::get_src2_12bit_imm(const std::string src2) const {
     uint32_t imm32 = 0;
     if (src2.substr(1, 2) == "0x") {
-        imm32 = std::stoi(src2.substr(1), nullptr, 16);
+        imm32 = std::stoull(src2.substr(1), nullptr, 16);
     } else {
-        imm32 = std::stoi(src2.substr(1));
+        imm32 = std::stoul(src2.substr(1));
     }
     return encode_imm32(imm32);
 }
@@ -117,6 +117,19 @@ uint32_t DataProcessingField::get_src2_12bit(const std::string opcode, const std
     return ret;
 }
 
+uint32_t DataProcessingField::get_src2_12bit_type123(const std::vector<std::string> operands) const {
+    uint32_t ret = 0;
+    auto src2 = operands.back();
+    if (src2[0] == '#') {
+        ret = get_src2_12bit_imm(src2);
+    } else if (src2[0] == 'r') {
+        ret = get_reg_4bit(src2);
+    } else {
+        throw std::runtime_error("unsupported description.");
+    }
+    return ret;
+}
+
 uint32_t DataProcessingField::encode_imm32(const uint32_t imm32) const {
     // rot(4bit), imm8(8bit)にエンコードできない数値が入力された場合はエラー
     uint32_t rot4 = 0, imm8 = 0;
@@ -146,19 +159,19 @@ void DataProcessingField::input(std::vector<std::string> asmcode_v) {
             funct = get_funct_6bit(opcode, operands[2]);
             rn = get_reg_4bit(operands[1]);
             rd = get_reg_4bit(operands[0]);
-            src2 = get_src2_12bit(opcode, operands);
+            src2 = get_src2_12bit_type123(operands);
             break;
         case 2:  // Type2: Opcode Rn, Src2
-            funct = get_funct_6bit(opcode, operands[2]);
+            funct = get_funct_6bit(opcode, operands[1]);
             rn = get_reg_4bit(operands[0]);
             rd = 0b0000;
-            src2 = get_src2_12bit(opcode, operands);
+            src2 = get_src2_12bit_type123(operands);
             break;
         case 3:  // Type3: Opcode Rd, Src2
-            funct = get_funct_6bit(opcode, operands[2]);
+            funct = get_funct_6bit(opcode, operands[1]);
             rn = 0b0000;
             rd = get_reg_4bit(operands[0]);
-            src2 = get_src2_12bit(opcode, operands);
+            src2 = get_src2_12bit_type123(operands);
             break;
         case 4:  // Type4: Opcode Rd, Rm, Rs/shamt5
             funct = get_funct_6bit(opcode, operands[2]);
@@ -167,7 +180,7 @@ void DataProcessingField::input(std::vector<std::string> asmcode_v) {
             src2 = get_src2_12bit(opcode, operands);
             break;
         default:
-            throw std::runtime_error("Unsupported format type.");
+            throw std::runtime_error("unsupported format type.");
     }
 }
 

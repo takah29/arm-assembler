@@ -15,12 +15,16 @@ Assembler::Assembler() {
         // 基本命令の登録
         opcode_info[x.first] = x.second;
         opcode_info[x.first]["cond"] = cond_info.at("al");
-        opcode_info[x.first]["S"] = 0b0;
-
-        // S命令の登録
-        opcode_info[x.first + 's'] = x.second;
-        opcode_info[x.first + 's']["cond"] = cond_info.at("al");
-        opcode_info[x.first + 's']["S"] = 0b1;
+        if (x.second.at("ftype") != 2) {
+            opcode_info[x.first]["S"] = 0b0;
+            // S命令の登録
+            opcode_info[x.first + 's'] = x.second;
+            opcode_info[x.first + 's']["cond"] = cond_info.at("al");
+            opcode_info[x.first + 's']["S"] = 0b1;
+        } else {
+            // TST, TEQ, CMP, CMNは無条件にS = 1
+            opcode_info[x.first]["S"] = 0b1;
+        }
 
         for (auto &y : cond_info) {
             // 条件命令の登録
@@ -30,15 +34,13 @@ Assembler::Assembler() {
             opcode_info[opcode_ex]["cond"] = y.second;
             if (x.second.at("ftype") != 2) {
                 opcode_info[opcode_ex]["S"] = 0b0;
-            } else {
-                opcode_info[opcode_ex]["S"] = 0b1;
-            }
 
-            // 条件命令 + S命令の登録
-            if (x.second.at("ftype") != 2) {
+                // S命令の登録
                 opcode_info[opcode_ex + 's'] = x.second;
                 opcode_info[opcode_ex + 's']["cond"] = y.second;
                 opcode_info[opcode_ex + 's']["S"] = 0b1;
+            } else {
+                opcode_info[opcode_ex]["S"] = 0b1;
             }
         }
     }
@@ -50,7 +52,6 @@ Assembler::~Assembler() {}
 
 uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
     std::transform(asmcode.begin(), asmcode.end(), asmcode.begin(), ::tolower);
-    // TODO: スペースの数を1つにする処理を追加する
     auto tokens = tokenize(asmcode);
 
     std::string opcode = tokens[0];
