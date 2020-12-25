@@ -23,8 +23,6 @@ uint32_t DataProcessingField::get_sflag_1bit(const std::string opcode) const { r
 
 uint32_t DataProcessingField::get_cmd_4bit(const std::string opcode) const { return opcode_info->at(opcode).at("cmd"); }
 
-constexpr uint32_t DataProcessingField::get_op_2bit() const { return 0b00; }
-
 uint32_t DataProcessingField::get_funct_6bit(const std::string opcode, const std::string src2) const {
     auto iflag = get_iflag_1bit(opcode, src2);
     auto cmd = get_cmd_4bit(opcode);
@@ -140,7 +138,7 @@ void DataProcessingField::input(std::vector<std::string> asmcode_v) {
     auto opcode = asmcode_v[0];
     std::vector<std::string> operands(asmcode_v.begin() + 1, asmcode_v.end());
     cond = get_cond_4bit(opcode);
-    op = 0b00;
+    op = get_op_2bit(opcode);
 
     auto ftype = get_ftype(opcode);
     switch (ftype) {
