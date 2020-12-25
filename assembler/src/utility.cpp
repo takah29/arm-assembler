@@ -1,5 +1,6 @@
 #include "utility.hpp"
 
+#include <fstream>
 #include <regex>
 #include <string>
 #include <vector>
@@ -62,4 +63,16 @@ std::string replace_all(const std::string str, const std::string from_str, const
         tmp_str.replace(pos, from_str.size(), to_str);
     }
     return tmp_str;
+}
+
+std::vector<std::string> loadtxt(std::string filepath) {
+    std::vector<std::string> result{};
+    std::string line;
+    std::ifstream infile(filepath);
+
+    while (getline(infile, line)) {
+        result.emplace_back(line);
+    }
+
+    return result;
 }

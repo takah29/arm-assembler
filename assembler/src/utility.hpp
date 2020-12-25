@@ -1,6 +1,7 @@
 #ifndef _UTILITY_H
 #define _UTILITY_H
 
+#include <algorithm>
 #include <array>
 #include <iostream>
 #include <string>
@@ -57,10 +58,23 @@ T rotr(const T n, const uint32_t s) {
     return (n >> s) | (n << (sizeof(T) * 8 - s));
 }
 
+template <class T, class S>
+std::vector<std::tuple<T, S>> zip(std::vector<T> container1, std::vector<S> container2) {
+    size_t min_size = std::min({container1.size(), container2.size()});
+    std::vector<std::tuple<T, S>> result{};
+
+    for (size_t i = 0; i < min_size; i++) {
+        result.emplace_back(container1[i], container2[i]);
+    }
+
+    return result;
+}
+
 std::string strip(std::string& s, const std::string trim_str);
 std::string unit_space(const std::string s);
 std::vector<size_t> find_all(const std::string str, const std::string substr);
 std::vector<std::string> split_reg(const std::string& s, const std::string regex_delim);
 std::string replace_all(const std::string str, const std::string from_str, const std::string to_str);
+std::vector<std::string> loadtxt(std::string filepath);
 
 #endif
