@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "data_processing_field.hpp"
+#include "memory_field.hpp"
 #include "multiplication_field.hpp"
 #include "utility.hpp"
 
@@ -54,11 +55,13 @@ Assembler::Assembler() {
     // Fieldクラスの設定
     fields[0] = new DataProcessingField(&opcode_info);
     fields[1] = new MultiplicationField(&opcode_info);
+    fields[2] = new MemoryField(&opcode_info);
 }
 
 Assembler::~Assembler() {
     delete fields[0];
     delete fields[1];
+    delete fields[2];
 }
 
 uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
