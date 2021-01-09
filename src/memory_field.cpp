@@ -21,7 +21,7 @@ MemoryField::~MemoryField() {}
 //     return ret;
 // }
 
-std::vector<std::string> MemoryField::split_operands(const std::string operands) {}
+// std::vector<std::string> MemoryField::split_operands(const std::string operands) {}
 
 uint32_t MemoryField::get_funct_6bit(const std::string opcode, const std::string adr) const {
     auto pos = adr.find_last_of(']');
@@ -40,8 +40,10 @@ uint32_t MemoryField::get_funct_6bit(const std::string opcode, const std::string
         throw std::runtime_error("unsupported description.");
     }
 
-    auto operands_str = std::regex_replace(adr, std::regex("\\[|\\]|!"), "");
+    auto operands_str = std::regex_replace(adr, std::regex(R"(\[|\]|!)"), "");
     print(operands_str);
+
+    return 0;
 }
 
 void MemoryField::input(std::vector<std::string> asmcode_v) {
