@@ -88,6 +88,10 @@ uint32_t MemoryField::get_src2_12bit_imm(const std::string operand_src2) const {
         } else {
             imm12 = std::stoul(operand_src2.substr(1));
         }
+
+        if (imm12 > (std::pow(2, 12) - 1)) {
+            throw std::runtime_error("an integer value that cannot be expressed in 12 bits.");
+        }
         return imm12;
     };
 
@@ -95,10 +99,6 @@ uint32_t MemoryField::get_src2_12bit_imm(const std::string operand_src2) const {
         src2 = to_imm12(operand_src2, 2);
     } else {  // case add: src2 = #<num>
         src2 = to_imm12(operand_src2, 1);
-    }
-
-    if (src2 > (std::pow(2, 12) - 1)) {
-        throw std::runtime_error("an integer value that cannot be expressed in 12 bits.");
     }
 
     return src2;
