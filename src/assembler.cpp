@@ -83,6 +83,10 @@ uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
         fields[1]->input(tokens);
         fields[1]->show_field();
         machine_code = fields[1]->output();
+    } else if (ftype == 7) {
+        fields[2]->input(tokens);
+        fields[2]->show_field();
+        machine_code = fields[2]->output();
     } else {
         throw std::runtime_error("unsupported format type.");
     }
