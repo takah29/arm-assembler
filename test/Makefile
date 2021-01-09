@@ -2,7 +2,7 @@ CXX      = clang++
 CXXFLAGS = -std=c++17 -Wall -Wextra
 SRC_DIR = ../src
 TESTS = test_assembler.o
-OBJS = assembler.o field.o data_processing_field.o multiplication_field.o utility.o
+OBJS = assembler.o field.o data_processing_field.o multiplication_field.o memory_field.o utility.o
 TARGET = run_all_test
 
 all : $(TARGET)
