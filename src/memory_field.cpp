@@ -1,6 +1,7 @@
 #include "memory_field.hpp"
 
 #include <bitset>
+#include <cmath>
 #include <regex>
 
 #include "utility.hpp"
@@ -60,8 +61,7 @@ uint32_t MemoryField::get_funct_6bit(const std::string opcode, const std::string
     }
 
     // Get iber and u flags
-    auto operands_str = std::regex_replace(adr, std::regex(R"(\[|\]|!)"), "");
-    auto adr_operands = split_reg(operands_str, ", ");
+    auto adr_operands = adr_to_operands(adr);
 
     uint32_t iber = 0, u = 0;
     if (adr_operands.size() == 2) {  // case: [rn, +-src2]
@@ -78,6 +78,39 @@ uint32_t MemoryField::get_funct_6bit(const std::string opcode, const std::string
     return l | (w << 1) | (b << 2) | (u << 3) | (p << 4) | (iber << 5);
 }
 
+uint32_t MemoryField::get_src2_12bit_imm(const std::string operand_src2) const {
+    uint32_t src2 = 0;
+
+    auto to_imm12 = [](std::string operand_src2, int n) {
+        uint32_t imm12 = 0;
+        if (operand_src2.substr(n, 2) == "0x") {
+            imm12 = std::stoull(operand_src2.substr(1), nullptr, 16);
+        } else {
+            imm12 = std::stoul(operand_src2.substr(1));
+        }
+        return imm12;
+    };
+
+    if (operand_src2[1] == '-') {  // case sub: src2 = #-<num>
+        src2 = to_imm12(operand_src2, 2);
+    } else {  // case add: src2 = #<num>
+        src2 = to_imm12(operand_src2, 1);
+    }
+
+    if (src2 > (std::pow(2, 12) - 1)) {
+        throw std::runtime_error("an integer value that cannot be expressed in 12 bits.");
+    }
+
+    return src2;
+}
+
+uint32_t MemoryField::get_src2_12bit_reg(const std::string src2) const {};  // not implemented
+
+std::vector<std::string> MemoryField::adr_to_operands(const std::string adr) const {
+    auto operands_str = std::regex_replace(adr, std::regex(R"(\[|\]|!)"), "");
+    return split_reg(operands_str, ", ");
+}
+
 void MemoryField::input(std::vector<std::string> asmcode_v) {
     auto opcode = asmcode_v[0];
     std::vector<std::string> operands(asmcode_v.begin() + 1, asmcode_v.end());
@@ -88,6 +121,16 @@ void MemoryField::input(std::vector<std::string> asmcode_v) {
     if (ftype == 7) {
         if (op == 0b01) {  // Opcode Rd, [Rn, +-Src2]
             funct = get_funct_6bit(opcode, operands.back());
+            rn = get_reg_4bit(operands[0]);
+
+            auto adr_operands = adr_to_operands(operands.back());
+            rd = get_reg_4bit(adr_operands[0]);
+
+            if (funct >> 5 == 0) {
+                src2 = (adr_operands.size() == 2) ? get_src2_12bit_imm(adr_operands[1]) : 0b0;
+            } else {
+                src2 = get_src2_12bit_reg(adr_operands[1]);
+            }
         } else if (op == 0b00) {
         } else {
             throw std::runtime_error("unsupported op.");
