@@ -87,3 +87,10 @@ TEST_F(AssemblerTest, correct_type8_input_test) {
     preprocess(expected_data);
     assert_vec_eq(input_data, expected_data);
 }
+
+TEST_F(AssemblerTest, correct_input_testcode) {
+    auto input_data = loadtxt("input/input_testcode.txt");
+    auto expected_data = loadtxt("input/input_testcode_ans.txt");
+    preprocess(expected_data);
+    assert_vec_eq(input_data, expected_data);
+}
