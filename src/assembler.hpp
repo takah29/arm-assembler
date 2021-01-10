@@ -50,7 +50,7 @@ class Assembler {
                                                    {"ldrb", {{"ftype", 7}, {"op", 0b01}, {"B", 0b1}, {"L", 0b1}}},
                                                    {"strh", {{"ftype", 7}, {"op", 0b00}, {"op2", 0b01}, {"L", 0b0}}},
                                                    {"ldrh", {{"ftype", 7}, {"op", 0b00}, {"op2", 0b01}, {"L", 0b1}}},
-                                                   {"strsb", {{"ftype", 7}, {"op", 0b00}, {"op2", 0b10}, {"L", 0b1}}},
+                                                   {"ldrsb", {{"ftype", 7}, {"op", 0b00}, {"op2", 0b10}, {"L", 0b1}}},
                                                    {"ldrsh", {{"ftype", 7}, {"op", 0b00}, {"op2", 0b11}, {"L", 0b1}}},
                                                    {"b", {{"ftype", 8}, {"op", 0b10}, {"L", 0b0}}},
                                                    {"bl", {{"ftype", 8}, {"op", 0b10}, {"L", 0b1}}}};
