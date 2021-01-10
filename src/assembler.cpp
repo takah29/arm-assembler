@@ -7,6 +7,7 @@
 #include <tuple>
 #include <vector>
 
+#include "branch_field.hpp"
 #include "data_processing_field.hpp"
 #include "memory_field.hpp"
 #include "multiplication_field.hpp"
@@ -56,12 +57,14 @@ Assembler::Assembler() {
     fields[0] = new DataProcessingField(&opcode_info);
     fields[1] = new MultiplicationField(&opcode_info);
     fields[2] = new MemoryField(&opcode_info);
+    fields[3] = new BranchField(&opcode_info);
 }
 
 Assembler::~Assembler() {
     delete fields[0];
     delete fields[1];
     delete fields[2];
+    delete fields[3];
 }
 
 uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
@@ -87,6 +90,10 @@ uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
         fields[2]->input(tokens);
         fields[2]->show_field();
         machine_code = fields[2]->output();
+    } else if (ftype == 8) {
+        fields[3]->input(tokens);
+        fields[3]->show_field();
+        machine_code = fields[3]->output();
     } else {
         throw std::runtime_error("unsupported format type.");
     }
