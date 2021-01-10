@@ -2,4 +2,3 @@ LSL R0, R9, #7
 ROR R3, R5, #21
 LSR R4, R8, R6
 ASR R5, R1, R12
-

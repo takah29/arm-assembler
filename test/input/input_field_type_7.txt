@@ -6,4 +6,3 @@ STRH R11, [R12], R13
 LDRH R14, [R15], #-26
 LDRSB R15, [R0, #77]!
 LDRSH R1, [R2], R3
-
