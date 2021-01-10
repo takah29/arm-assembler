@@ -104,7 +104,18 @@ uint32_t MemoryField::get_src2_12bit_imm(const std::string operand_src2) const {
     return src2;
 }
 
-uint32_t MemoryField::get_src2_12bit_reg(const std::string src2) const {};  // not implemented
+uint32_t MemoryField::get_src2_12bit_reg(const std::string operand_src2) const {
+    // Shift operator is not supported, so shamt5 and sh fields are 0
+    uint32_t src2 = 0;
+
+    if (operand_src2[0] == '-') {  // case sub: src2 = -r<num>
+        src2 = get_reg_4bit(operand_src2.substr(1));
+    } else {  // case add: src2 = r<num>
+        src2 = get_reg_4bit(operand_src2);
+    }
+
+    return src2;
+};
 
 std::vector<std::string> MemoryField::adr_to_operands(const std::string adr) const {
     auto operands_str = std::regex_replace(adr, std::regex(R"(\[|\]|!)"), "");
@@ -126,9 +137,9 @@ void MemoryField::input(std::vector<std::string> asmcode_v) {
             auto adr_operands = adr_to_operands(operands.back());
             rd = get_reg_4bit(adr_operands[0]);
 
-            if (funct >> 5 == 0) {
+            if (funct >> 5 == 0) {  // immediate
                 src2 = (adr_operands.size() == 2) ? get_src2_12bit_imm(adr_operands[1]) : 0b0;
-            } else {
+            } else {  // register
                 src2 = get_src2_12bit_reg(adr_operands[1]);
             }
         } else if (op == 0b00) {
