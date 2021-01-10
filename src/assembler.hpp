@@ -10,13 +10,6 @@
 #include "types.hpp"
 
 class Assembler {
-   public:
-    Assembler();
-    ~Assembler();
-
-    uint32_t convert(std::string asmcode, const bool debug_flag);
-
-   private:
     inline static const OpcodeInfo opcodebase_info{{"and", {{"ftype", 1}, {"op", 0b00}, {"cmd", 0b0000}}},
                                                    {"eor", {{"ftype", 1}, {"op", 0b00}, {"cmd", 0b0001}}},
                                                    {"sub", {{"ftype", 1}, {"op", 0b00}, {"cmd", 0b0010}}},
@@ -60,11 +53,17 @@ class Assembler {
         {"ge", 0b1010}, {"lt", 0b1011}, {"gt", 0b1100}, {"le", 0b1101}, {"al", 0b1110}};
     OpcodeInfo opcode_info;
 
+    std::array<Field *, 4> fields;
+
     std::vector<std::string> tokenize(const std::string asmcode);
     std::vector<std::string> split_operands(const std::string operandes, const size_t n_operands);
     std::tuple<std::string, std::string> split_opcode(std::string opcode);
 
-    std::array<Field *, 4> fields;
+   public:
+    Assembler();
+    ~Assembler();
+
+    uint32_t convert(std::string asmcode, const bool debug_flag);
 };
 
 #endif
