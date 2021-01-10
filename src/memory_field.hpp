@@ -19,10 +19,17 @@ class MemoryField : public Field {
     uint32_t get_uflag_1bit(const std::string operand_src2) const;
     uint32_t get_bflag_1bit(const std::string operand_src2) const;
     uint32_t get_lflag_1bit(const std::string operand_src2) const;
+    std::tuple<uint32_t, uint32_t> get_pwflag(const std::string adr) const;
     uint32_t get_funct_6bit(const std::string opcode, const std::string adr) const;
-    uint32_t get_src2_12bit_imm(const std::string adr) const;
-    uint32_t get_src2_12bit_reg(const std::string adr) const;
+    uint32_t get_funct_6bit_ext(const std::string opcode, const std::string adr) const;
 
+    uint32_t get_op2_2bit(const std::string opcode) const;
+    uint32_t get_src2_12bit_imm(const std::string operand_src2) const;
+    uint32_t get_src2_12bit_reg(const std::string operand_src2) const;
+    uint32_t get_src2_12bit_imm_ext(const std::string opcode, const std::string operand_src2) const;
+    uint32_t get_src2_12bit_reg_ext(const std::string opcode, const std::string operand_src2) const;
+
+    uint32_t to_imm(std::string operand_src2, int n_bit) const;
     std::vector<std::string> adr_to_operands(std::string adr) const;
 
    public:

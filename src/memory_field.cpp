@@ -3,6 +3,7 @@
 #include <bitset>
 #include <cmath>
 #include <regex>
+#include <tuple>
 
 #include "utility.hpp"
 
@@ -24,10 +25,10 @@ uint32_t MemoryField::get_iflag_1bit(const std::string operand_src2) const {
 
 uint32_t MemoryField::get_uflag_1bit(const std::string operand_src2) const {
     uint32_t ret = 0;
-    if (operand_src2[0] == '#' or operand_src2[0] == 'r') {  // plus case: src2 = "#<num>" or "r<reg_num>"
-        ret = 0b1;
-    } else if (operand_src2[0] == '-' or operand_src2[1] == '-') {  // minus case: src2 = "-r<reg_num>" or "#-<num>"
+    if (operand_src2[0] == '-' or operand_src2[1] == '-') {  // minus case: src2 = "-r<reg_num>" or "#-<num>"
         ret = 0b0;
+    } else if (operand_src2[0] == '#' or operand_src2[0] == 'r') {  // plus case: src2 = "#<num>" or "r<reg_num>"
+        ret = 0b1;
     } else {
         throw std::runtime_error("unsupported description.");
     }
@@ -38,11 +39,7 @@ uint32_t MemoryField::get_bflag_1bit(const std::string opcode) const { return op
 
 uint32_t MemoryField::get_lflag_1bit(const std::string opcode) const { return opcode_info->at(opcode).at("L"); }
 
-uint32_t MemoryField::get_funct_6bit(const std::string opcode, const std::string adr) const {
-    // Get B and L flags
-    auto b = get_bflag_1bit(opcode);
-    auto l = get_lflag_1bit(opcode);
-
+std::tuple<uint32_t, uint32_t> MemoryField::get_pwflag(const std::string adr) const {
     // Get p and w flags
     auto pos = adr.find_last_of(']');
     uint32_t p = 0, w = 0;
@@ -60,9 +57,17 @@ uint32_t MemoryField::get_funct_6bit(const std::string opcode, const std::string
         throw std::runtime_error("unsupported description.");
     }
 
+    return {p, w};
+}
+
+uint32_t MemoryField::get_funct_6bit(const std::string opcode, const std::string adr) const {
+    // Get B and L flags
+    auto b = get_bflag_1bit(opcode);
+    auto l = get_lflag_1bit(opcode);
+    auto [p, w] = get_pwflag(adr);
+
     // Get iber and u flags
     auto adr_operands = adr_to_operands(adr);
-
     uint32_t iber = 0, u = 0;
     if (adr_operands.size() == 2) {  // case: [rn, +-src2]
         auto operand_src2 = adr_operands[1];
@@ -78,31 +83,29 @@ uint32_t MemoryField::get_funct_6bit(const std::string opcode, const std::string
     return l | (w << 1) | (b << 2) | (u << 3) | (p << 4) | (iber << 5);
 }
 
-uint32_t MemoryField::get_src2_12bit_imm(const std::string operand_src2) const {
-    uint32_t src2 = 0;
+uint32_t MemoryField::get_funct_6bit_ext(const std::string opcode, const std::string adr) const {
+    // Get B and L flags
+    auto l = get_lflag_1bit(opcode);
+    auto [p, w] = get_pwflag(adr);
 
-    auto to_imm12 = [](std::string operand_src2, int n) {
-        uint32_t imm12 = 0;
-        if (operand_src2.substr(n, 2) == "0x") {
-            imm12 = std::stoull(operand_src2.substr(1), nullptr, 16);
-        } else {
-            imm12 = std::stoul(operand_src2.substr(1));
-        }
-
-        if (imm12 > (std::pow(2, 12) - 1)) {
-            throw std::runtime_error("an integer value that cannot be expressed in 12 bits.");
-        }
-        return imm12;
-    };
-
-    if (operand_src2[1] == '-') {  // case sub: src2 = #-<num>
-        src2 = to_imm12(operand_src2, 2);
-    } else {  // case add: src2 = #<num>
-        src2 = to_imm12(operand_src2, 1);
+    // Get i and u flags
+    auto adr_operands = adr_to_operands(adr);
+    uint32_t i = 0, u = 0;
+    if (adr_operands.size() == 2) {  // case: [rn, +-src2]
+        auto operand_src2 = adr_operands[1];
+        i = get_iflag_1bit(operand_src2);
+        u = get_uflag_1bit(operand_src2);
+    } else if (adr_operands.size() == 1 and p == 0b1 and w == 0b0) {  // case: [rn]
+        i = 0b1;
+        u = 0b1;
+    } else {
+        throw std::runtime_error("unsupported description.");
     }
 
-    return src2;
+    return l | (w << 1) | (i << 2) | (u << 3) | (p << 4);
 }
+
+uint32_t MemoryField::get_src2_12bit_imm(const std::string operand_src2) const { return to_imm(operand_src2, 12); }
 
 uint32_t MemoryField::get_src2_12bit_reg(const std::string operand_src2) const {
     // Shift operator is not supported, so shamt5 and sh fields are 0
@@ -115,7 +118,62 @@ uint32_t MemoryField::get_src2_12bit_reg(const std::string operand_src2) const {
     }
 
     return src2;
-};
+}
+
+uint32_t MemoryField::get_op2_2bit(const std::string opcode) const { return opcode_info->at(opcode).at("op2"); }
+
+uint32_t MemoryField::get_src2_12bit_imm_ext(const std::string opcode, const std::string operand_src2) const {
+    uint32_t op2 = get_op2_2bit(opcode);
+
+    uint32_t imm8 = to_imm(operand_src2, 8);
+    auto [imm4high, imm4low] = [&]() -> std::tuple<uint32_t, uint32_t> {
+        uint32_t imm4low = imm8 & 0b1111;
+        uint32_t imm4high = imm8 >> 4;
+        return {imm4high, imm4low};
+    }();
+
+    return imm4low | (0b1 << 4) | (op2 << 5) | (0b1 << 7) | (imm4high << 8);
+}
+
+uint32_t MemoryField::get_src2_12bit_reg_ext(const std::string opcode, const std::string operand_src2) const {
+    uint32_t op2 = get_op2_2bit(opcode);
+
+    // Shift operator is not supported, so shamt5 and sh fields are 0
+    uint32_t rm = 0;
+    if (operand_src2[0] == '-') {  // case sub: src2 = -r<num>
+        rm = get_reg_4bit(operand_src2.substr(1));
+    } else {  // case add: src2 = r<num>
+        rm = get_reg_4bit(operand_src2);
+    }
+
+    return rm | (0b1 << 4) | (op2 << 5) | (0b1 << 7);
+}
+
+uint32_t MemoryField::to_imm(std::string operand_src2, int n_bit) const {
+    auto conv = [&](int skip) {
+        uint32_t ret = 0;
+        if (operand_src2.substr(skip, 2) == "0x") {
+            ret = std::stoull(operand_src2.substr(skip), nullptr, 16);
+        } else {
+            ret = std::stoul(operand_src2.substr(skip));
+        }
+
+        print(ret, n_bit);
+        if (ret > (std::pow(2, n_bit) - 1)) {
+            throw std::runtime_error(("an integer value that cannot be represented by the specified bits."));
+        }
+        return ret;
+    };
+
+    uint32_t imm = 0;
+    if (operand_src2[1] == '-') {  // case sub: src2 = #-<num>
+        imm = conv(2);
+    } else {  // case add: src2 = #<num>
+        imm = conv(1);
+    }
+
+    return imm;
+}
 
 std::vector<std::string> MemoryField::adr_to_operands(const std::string adr) const {
     auto operands_str = std::regex_replace(adr, std::regex(R"(\[|\]|!)"), "");
@@ -129,20 +187,29 @@ void MemoryField::input(std::vector<std::string> asmcode_v) {
     op = get_op_2bit(opcode);
 
     auto ftype = get_ftype(opcode);
-    if (ftype == 7) {
-        if (op == 0b01) {  // Opcode Rd, [Rn, +-Src2]
+    if (ftype == 7) {      // Opcode Rd, [Rn, +-Src2]
+        if (op == 0b01) {  // standard memory instruction
             funct = get_funct_6bit(opcode, operands.back());
-            rn = get_reg_4bit(operands[0]);
-
             auto adr_operands = adr_to_operands(operands.back());
-            rd = get_reg_4bit(adr_operands[0]);
+            rn = get_reg_4bit(adr_operands[0]);
+            rd = get_reg_4bit(operands[0]);
 
-            if (funct >> 5 == 0) {  // immediate
+            if (funct >> 5 == 0) {  //  immediate: iberflag = 1
                 src2 = (adr_operands.size() == 2) ? get_src2_12bit_imm(adr_operands[1]) : 0b0;
-            } else {  // register
+            } else {  // register: iberflag = 0
                 src2 = get_src2_12bit_reg(adr_operands[1]);
             }
-        } else if (op == 0b00) {
+        } else if (op == 0b00) {  // extended memory instruction
+            funct = get_funct_6bit_ext(opcode, operands.back());
+            auto adr_operands = adr_to_operands(operands.back());
+            rn = get_reg_4bit(adr_operands[0]);
+            rd = get_reg_4bit(operands[0]);
+
+            if (((funct >> 2) & 0b1) == 1) {  // immediate: iflag = 1
+                src2 = (adr_operands.size() == 2) ? get_src2_12bit_imm_ext(opcode, adr_operands[1]) : 0b0;
+            } else {  // register: iflag = 0
+                src2 = get_src2_12bit_reg_ext(opcode, adr_operands[1]);
+            }
         } else {
             throw std::runtime_error("unsupported op.");
         }
