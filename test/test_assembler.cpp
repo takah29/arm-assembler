@@ -17,8 +17,8 @@ class AssemblerTest : public ::testing::Test {
     void assert_vec_eq(vector<string> input_data, vector<string> expected_data) {
         for (auto [input, expected] : zip(input_data, expected_data)) {
             if (input == "" and expected == "") break;
-            auto asmcode = unit_space(strip(input, " "));
-            print(input, "->");
+            auto asmcode = unit_space(strip(input));
+            print(asmcode, "->");
             auto result = assembler_ptr->convert(asmcode, false);
             ASSERT_EQ(result, std::stoul(expected, nullptr, 2));
         }

@@ -7,14 +7,16 @@
 
 void print() { std::cout << std::endl; }
 
-std::string strip(std::string &s, const std::string trim_str) {
-    std::string result;
+std::string strip(const std::string& s) {
+    auto remove_chars = " \t\v\r\n";
+    std::string result = s;
 
-    std::string::size_type left = s.find_first_not_of(trim_str);
+    auto left = s.find_first_not_of(remove_chars);
     if (left != std::string::npos) {
-        std::string::size_type right = s.find_last_not_of(trim_str);
+        auto right = s.find_last_not_of(remove_chars);
         result = s.substr(left, right - left + 1);
     }
+
     return result;
 }
 
@@ -43,7 +45,7 @@ std::string unit_space(const std::string s) {
     return ret;
 }
 
-std::vector<std::string> split_reg(const std::string &s, const std::string regex_delim) {
+std::vector<std::string> split_reg(const std::string& s, const std::string regex_delim) {
     std::vector<std::string> v;
 
     std::regex separator{regex_delim};

@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
     Assembler assembler{};
     string asmcode;
     while (getline(infile, asmcode)) {
-        asmcode = unit_space(strip(asmcode, " "));
+        asmcode = unit_space(strip(asmcode));
         if (asmcode == "" or asmcode.substr(0, 2) == "//") {
             continue;
         }
