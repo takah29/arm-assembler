@@ -49,7 +49,6 @@ std::tuple<uint32_t, uint32_t> MemoryField::get_pwflag(const std::string adr) co
     } else if (adr[pos + 1] == '!') {  // preindex
         p = 0b1;
         w = 0b1;
-
     } else if (adr[pos + 1] == ',') {  // postindex
         p = 0b0;
         w = 0b0;
@@ -158,7 +157,6 @@ uint32_t MemoryField::to_imm(std::string operand_src2, int n_bit) const {
             ret = std::stoul(operand_src2.substr(skip));
         }
 
-        print(ret, n_bit);
         if (ret > (std::pow(2, n_bit) - 1)) {
             throw std::runtime_error(("an integer value that cannot be represented by the specified bits."));
         }
