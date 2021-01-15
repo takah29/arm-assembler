@@ -32,7 +32,7 @@ class DataProcessingField : public Field {
     uint32_t encode_imm32(const uint32_t imm32) const;
 
    public:
-    DataProcessingField(OpcodeInfo *opcode_info);
+    DataProcessingField(OpcodeInfo *opcode_info_ptr);
     ~DataProcessingField();
 
     void input(std::vector<std::string> asmcode_v) override;

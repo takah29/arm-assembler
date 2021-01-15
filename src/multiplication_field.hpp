@@ -22,7 +22,7 @@ class MultiplicationField : public Field {
     uint32_t get_funct_6bit(const std::string opcode) const;
 
    public:
-    MultiplicationField(OpcodeInfo *opcode_info);
+    MultiplicationField(OpcodeInfo *opcode_info_ptr);
     ~MultiplicationField();
 
     void input(std::vector<std::string> asmcode_v) override;

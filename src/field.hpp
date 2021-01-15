@@ -8,7 +8,7 @@
 
 class Field {
    protected:
-    OpcodeInfo *opcode_info;
+    OpcodeInfo *opcode_info_ptr;
 
     uint32_t get_reg_4bit(const std::string reg) const;
     uint32_t get_cond_4bit(const std::string opcode) const;
@@ -16,7 +16,7 @@ class Field {
     uint32_t get_op_2bit(const std::string opcode) const;
 
    public:
-    Field(OpcodeInfo *opcode_info);
+    Field(OpcodeInfo *opcode_info_ptr);
     virtual ~Field();
 
     virtual void input(std::vector<std::string> asmcode_v) = 0;

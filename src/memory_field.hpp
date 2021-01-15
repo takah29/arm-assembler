@@ -33,7 +33,7 @@ class MemoryField : public Field {
     std::vector<std::string> adr_to_operands(std::string adr) const;
 
    public:
-    MemoryField(OpcodeInfo *opcode_info);
+    MemoryField(OpcodeInfo *opcode_info_ptr);
     ~MemoryField();
 
     void input(std::vector<std::string> asmcode_v) override;

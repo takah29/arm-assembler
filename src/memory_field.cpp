@@ -7,8 +7,8 @@
 
 #include "utility.hpp"
 
-MemoryField::MemoryField(OpcodeInfo *opcode_info)
-    : Field(opcode_info), cond(0), op(0), funct(0), rn(0), rd(0), src2(0) {}
+MemoryField::MemoryField(OpcodeInfo *opcode_info_ptr)
+    : Field(opcode_info_ptr), cond(0), op(0), funct(0), rn(0), rd(0), src2(0) {}
 MemoryField::~MemoryField() {}
 
 uint32_t MemoryField::get_iflag_1bit(const std::string operand_src2) const {
@@ -35,9 +35,9 @@ uint32_t MemoryField::get_uflag_1bit(const std::string operand_src2) const {
     return ret;
 }
 
-uint32_t MemoryField::get_bflag_1bit(const std::string opcode) const { return opcode_info->at(opcode).at("B"); }
+uint32_t MemoryField::get_bflag_1bit(const std::string opcode) const { return opcode_info_ptr->at(opcode).at("B"); }
 
-uint32_t MemoryField::get_lflag_1bit(const std::string opcode) const { return opcode_info->at(opcode).at("L"); }
+uint32_t MemoryField::get_lflag_1bit(const std::string opcode) const { return opcode_info_ptr->at(opcode).at("L"); }
 
 std::tuple<uint32_t, uint32_t> MemoryField::get_pwflag(const std::string adr) const {
     // Get p and w flags
@@ -119,7 +119,7 @@ uint32_t MemoryField::get_src2_12bit_reg(const std::string operand_src2) const {
     return src2;
 }
 
-uint32_t MemoryField::get_op2_2bit(const std::string opcode) const { return opcode_info->at(opcode).at("op2"); }
+uint32_t MemoryField::get_op2_2bit(const std::string opcode) const { return opcode_info_ptr->at(opcode).at("op2"); }
 
 uint32_t MemoryField::get_src2_12bit_imm_ext(const std::string opcode, const std::string operand_src2) const {
     uint32_t op2 = get_op2_2bit(opcode);

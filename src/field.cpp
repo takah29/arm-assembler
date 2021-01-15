@@ -1,6 +1,6 @@
 #include "field.hpp"
 
-Field::Field(OpcodeInfo *opcode_info) : opcode_info(opcode_info) {}
+Field::Field(OpcodeInfo *opcode_info_ptr) : opcode_info_ptr(opcode_info_ptr) {}
 Field::~Field() {}
 
 uint32_t Field::get_reg_4bit(const std::string reg) const {
@@ -20,8 +20,8 @@ uint32_t Field::get_reg_4bit(const std::string reg) const {
     }
 }
 
-uint32_t Field::get_cond_4bit(const std::string opcode) const { return opcode_info->at(opcode).at("cond"); }
+uint32_t Field::get_cond_4bit(const std::string opcode) const { return opcode_info_ptr->at(opcode).at("cond"); }
 
-uint32_t Field::get_ftype(const std::string opcode) const { return opcode_info->at(opcode).at("ftype"); }
+uint32_t Field::get_ftype(const std::string opcode) const { return opcode_info_ptr->at(opcode).at("ftype"); }
 
-uint32_t Field::get_op_2bit(const std::string opcode) const { return opcode_info->at(opcode).at("op"); }
+uint32_t Field::get_op_2bit(const std::string opcode) const { return opcode_info_ptr->at(opcode).at("op"); }

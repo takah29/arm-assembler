@@ -4,13 +4,13 @@
 
 #include "utility.hpp"
 
-MultiplicationField::MultiplicationField(OpcodeInfo *opcode_info)
-    : Field(opcode_info), cond(0), op(0), funct(0), rd(0), ra(0), rm(0), rn(0) {}
+MultiplicationField::MultiplicationField(OpcodeInfo *opcode_info_ptr)
+    : Field(opcode_info_ptr), cond(0), op(0), funct(0), rd(0), ra(0), rm(0), rn(0) {}
 MultiplicationField::~MultiplicationField() {}
 
-uint32_t MultiplicationField::get_sflag_1bit(const std::string opcode) const { return opcode_info->at(opcode).at("S"); }
+uint32_t MultiplicationField::get_sflag_1bit(const std::string opcode) const { return opcode_info_ptr->at(opcode).at("S"); }
 
-uint32_t MultiplicationField::get_cmd_3bit(const std::string opcode) const { return opcode_info->at(opcode).at("cmd"); }
+uint32_t MultiplicationField::get_cmd_3bit(const std::string opcode) const { return opcode_info_ptr->at(opcode).at("cmd"); }
 
 uint32_t MultiplicationField::get_funct_6bit(const std::string opcode) const {
     auto cmd = get_cmd_3bit(opcode);

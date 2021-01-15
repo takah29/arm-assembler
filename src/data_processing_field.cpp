@@ -4,13 +4,13 @@
 
 #include "utility.hpp"
 
-DataProcessingField::DataProcessingField(OpcodeInfo *opcode_info)
-    : Field(opcode_info), cond(0), op(0), funct(0), rn(0), rd(0), src2(0) {}
+DataProcessingField::DataProcessingField(OpcodeInfo *opcode_info_ptr)
+    : Field(opcode_info_ptr), cond(0), op(0), funct(0), rn(0), rd(0), src2(0) {}
 DataProcessingField::~DataProcessingField() {}
 
 uint32_t DataProcessingField::get_iflag_1bit(const std::string opcode, const std::string src2) const {
     uint32_t ret = 0;
-    auto cmd = opcode_info->at(opcode).at("cmd");
+    auto cmd = opcode_info_ptr->at(opcode).at("cmd");
     if (cmd == 0b1101 and opcode.substr(0, 3) != "mov") {
         ret = 0b0;
     } else {
@@ -19,9 +19,9 @@ uint32_t DataProcessingField::get_iflag_1bit(const std::string opcode, const std
     return ret;
 }
 
-uint32_t DataProcessingField::get_sflag_1bit(const std::string opcode) const { return opcode_info->at(opcode).at("S"); }
+uint32_t DataProcessingField::get_sflag_1bit(const std::string opcode) const { return opcode_info_ptr->at(opcode).at("S"); }
 
-uint32_t DataProcessingField::get_cmd_4bit(const std::string opcode) const { return opcode_info->at(opcode).at("cmd"); }
+uint32_t DataProcessingField::get_cmd_4bit(const std::string opcode) const { return opcode_info_ptr->at(opcode).at("cmd"); }
 
 uint32_t DataProcessingField::get_funct_6bit(const std::string opcode, const std::string src2) const {
     auto iflag = get_iflag_1bit(opcode, src2);
@@ -33,7 +33,7 @@ uint32_t DataProcessingField::get_funct_6bit(const std::string opcode, const std
 
 uint32_t DataProcessingField::get_shamt5_5bit(const std::string opcode, const std::string src2) const {
     uint32_t ret = 0;
-    auto cmd = opcode_info->at(opcode).at("cmd");
+    auto cmd = opcode_info_ptr->at(opcode).at("cmd");
     if (cmd == 0b1101 and src2[0] == '#') {
         ret = std::stoi(src2.substr(1));
     } else {
@@ -44,9 +44,9 @@ uint32_t DataProcessingField::get_shamt5_5bit(const std::string opcode, const st
 
 uint32_t DataProcessingField::get_sh_2bit(const std::string opcode) const {
     uint32_t ret = 0;
-    auto cmd = opcode_info->at(opcode).at("cmd");
+    auto cmd = opcode_info_ptr->at(opcode).at("cmd");
     if (cmd == 0b1101) {
-        ret = opcode_info->at(opcode).at("sh");
+        ret = opcode_info_ptr->at(opcode).at("sh");
     } else {
         ret = 0b00;
     }
