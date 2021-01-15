@@ -19,7 +19,7 @@ class AssemblerTest : public ::testing::Test {
             if (input == "" and expected == "") break;
             auto asmcode = unit_space(strip(input));
             print(asmcode, "->");
-            auto result = assembler_ptr->convert(asmcode, false);
+            auto result = assembler_ptr->convert(asmcode);
             ASSERT_EQ(result, std::stoul(expected, nullptr, 2));
         }
     }
