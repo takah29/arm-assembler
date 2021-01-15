@@ -1,6 +1,7 @@
 #include "assembler.hpp"
 
 #include <algorithm>
+#include <iomanip>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -55,9 +56,11 @@ uint32_t Assembler::convert(std::string asmcode) {
     }();
 
     uint32_t machine_code = 0;
+    std::cout.setf(std::ios::left, std::ios::adjustfield);
     if (0 <= num and num < 4) {
         fields[num]->input(tokens);
         if (debug_flag) {
+            std::cout << std::setw(25) << asmcode << " -> ";
             fields[num]->show_field();
         }
         machine_code = fields[num]->output();
