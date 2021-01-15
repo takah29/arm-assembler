@@ -67,7 +67,7 @@ Assembler::~Assembler() {
     delete fields[3];
 }
 
-uint32_t Assembler::convert(std::string asmcode, const bool debug_flag) {
+uint32_t Assembler::convert(std::string asmcode) {
     std::transform(asmcode.begin(), asmcode.end(), asmcode.begin(), ::tolower);
     auto tokens = tokenize(asmcode);
 

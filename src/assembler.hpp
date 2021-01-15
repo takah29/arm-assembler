@@ -63,7 +63,7 @@ class Assembler {
     Assembler();
     ~Assembler();
 
-    uint32_t convert(std::string asmcode, const bool debug_flag);
+    uint32_t convert(std::string asmcode);
 };
 
 #endif
