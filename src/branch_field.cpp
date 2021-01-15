@@ -17,7 +17,7 @@ uint32_t BranchField::get_funct_2bit(const std::string opcode) const {
 
 uint32_t BranchField::get_imm24_24bit(std::string label, int current_line_num) const {
     int label_num = label_info_ptr->at(label);
-    int32_t d = label_num - current_line_num + 2;
+    int32_t d = label_num - current_line_num - 2;
     if (!(-pow(2, 23) <= d and d <= pow(2, 23) - 1)) {
         throw std::runtime_error("The branch is too far away.");
     }
