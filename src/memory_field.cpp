@@ -185,12 +185,13 @@ void MemoryField::input(std::vector<std::string> asmcode_v) {
     op = get_op_2bit(opcode);
 
     auto ftype = get_ftype(opcode);
-    if (ftype == 7) {      // Opcode Rd, [Rn, +-Src2]
+    if (ftype == 7) {  // Opcode Rd, [Rn, +-Src2]
+        auto adr_operands = adr_to_operands(operands.back());
+        rn = get_reg_4bit(adr_operands[0]);
+        rd = get_reg_4bit(operands[0]);
+
         if (op == 0b01) {  // standard memory instruction
             funct = get_funct_6bit(opcode, operands.back());
-            auto adr_operands = adr_to_operands(operands.back());
-            rn = get_reg_4bit(adr_operands[0]);
-            rd = get_reg_4bit(operands[0]);
 
             if (funct >> 5 == 0) {  //  immediate: iberflag = 1
                 src2 = (adr_operands.size() == 2) ? get_src2_12bit_imm(adr_operands[1]) : 0b0;
@@ -199,9 +200,6 @@ void MemoryField::input(std::vector<std::string> asmcode_v) {
             }
         } else if (op == 0b00) {  // extended memory instruction
             funct = get_funct_6bit_ext(opcode, operands.back());
-            auto adr_operands = adr_to_operands(operands.back());
-            rn = get_reg_4bit(adr_operands[0]);
-            rd = get_reg_4bit(operands[0]);
 
             if (((funct >> 2) & 0b1) == 1) {  // immediate: iflag = 1
                 src2 = (adr_operands.size() == 2) ? get_src2_12bit_imm_ext(opcode, adr_operands[1]) : 0b0;
