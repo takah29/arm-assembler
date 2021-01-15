@@ -61,6 +61,7 @@ class Assembler {
 
     void initialize();
     void build_label_info(const std::vector<std::string> assemblies);
+    void set_fields();
     std::vector<std::string> tokenize(std::string asmcode);
     std::vector<std::string> split_operands(const std::string operandes, const size_t n_operands);
     std::tuple<std::string, std::string> split_opcode(std::string opcode);

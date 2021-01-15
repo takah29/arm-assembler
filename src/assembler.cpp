@@ -14,12 +14,16 @@
 #include "multiplication_field.hpp"
 #include "utility.hpp"
 
-Assembler::Assembler(bool debug_flag) : debug_flag(debug_flag) { initialize(); }
+Assembler::Assembler(bool debug_flag) : debug_flag(debug_flag) {
+    initialize();
+    set_fields();
+}
 
 Assembler::Assembler(std::vector<std::string> assemblies, bool debug_flag)
     : assemblies(assemblies), debug_flag(debug_flag) {
-    build_label_info(assemblies);
     initialize();
+    build_label_info(assemblies);
+    set_fields();
 }
 
 Assembler::~Assembler() {
@@ -119,7 +123,9 @@ void Assembler::initialize() {
             }
         }
     }
+}
 
+void Assembler::set_fields() {
     // Fieldクラスの設定
     fields[0] = new DataProcessingField(&opcode_info);
     fields[1] = new MultiplicationField(&opcode_info);
