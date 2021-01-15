@@ -34,7 +34,7 @@ class AssemblerTest : public ::testing::Test {
 };
 
 void normalize(vector<string> &data) {
-    auto f = [&](string x) { return unit_space(strip(x)); };
+    auto f = [](string x) { return unit_space(strip(x)); };
     transform(data.begin(), data.end(), data.begin(), f);
 }
 
