@@ -25,7 +25,7 @@ class MultiplicationField : public Field {
     MultiplicationField(OpcodeInfo *opcode_info_ptr);
     ~MultiplicationField();
 
-    void input(std::vector<std::string> asmcode_v) override;
+    void input(std::vector<std::string> asmcode_v, int current_line_num=-1) override;
     uint32_t output() override;
     void clear_field() override;
     void show_field() override;

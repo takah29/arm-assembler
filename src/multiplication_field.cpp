@@ -18,7 +18,7 @@ uint32_t MultiplicationField::get_funct_6bit(const std::string opcode) const {
     return sflag | (cmd << 1) | (0b00 << 4);
 }
 
-void MultiplicationField::input(std::vector<std::string> asmcode_v) {
+void MultiplicationField::input(std::vector<std::string> asmcode_v, [[maybe_unused]] int current_line_num) {
     auto opcode = asmcode_v[0];
     std::vector<std::string> operands(asmcode_v.begin() + 1, asmcode_v.end());
     cond = get_cond_4bit(opcode);

@@ -29,7 +29,7 @@ Assembler::~Assembler() {
     delete fields[3];
 }
 
-uint32_t Assembler::convert(std::string asmcode) {
+uint32_t Assembler::convert(std::string asmcode, int current_line_num) {
     std::transform(asmcode.begin(), asmcode.end(), asmcode.begin(), ::tolower);
     auto tokens = tokenize(asmcode);
 
@@ -58,7 +58,7 @@ uint32_t Assembler::convert(std::string asmcode) {
     uint32_t machine_code = 0;
     std::cout.setf(std::ios::left, std::ios::adjustfield);
     if (0 <= num and num < 4) {
-        fields[num]->input(tokens);
+        fields[num]->input(tokens, current_line_num);
         if (debug_flag) {
             std::cout << std::setw(25) << asmcode << " -> ";
             fields[num]->show_field();
@@ -73,8 +73,8 @@ uint32_t Assembler::convert(std::string asmcode) {
 
 std::vector<uint32_t> Assembler::convert_all() {
     std::vector<uint32_t> result;
-    for (auto &asmcode : assemblies) {
-        result.emplace_back(convert(asmcode));
+    for (size_t i = 0; i < assemblies.size(); i++) {
+        result.emplace_back(convert(assemblies[i], i));
     }
 
     return result;

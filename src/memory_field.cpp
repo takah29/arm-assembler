@@ -178,7 +178,7 @@ std::vector<std::string> MemoryField::adr_to_operands(const std::string adr) con
     return split_reg(operands_str, ", ");
 }
 
-void MemoryField::input(std::vector<std::string> asmcode_v) {
+void MemoryField::input(std::vector<std::string> asmcode_v, [[maybe_unused]] int current_line_num) {
     auto opcode = asmcode_v[0];
     std::vector<std::string> operands(asmcode_v.begin() + 1, asmcode_v.end());
     cond = get_cond_4bit(opcode);

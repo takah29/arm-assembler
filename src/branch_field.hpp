@@ -17,12 +17,13 @@ class BranchField : public Field {
 
     uint32_t get_lflag_1bit(const std::string opcode) const;
     uint32_t get_funct_2bit(const std::string opcode) const;
+    uint32_t get_imm24_24bit(std::string label, int currect_line_num) const;
 
    public:
     BranchField(OpcodeInfo *opcode_info_ptr, LabelInfo *label_info_ptr);
     ~BranchField();
 
-    void input(std::vector<std::string> asmcode_v) override;
+    void input(std::vector<std::string> asmcode_v, int current_line_num = -1) override;
     uint32_t output() override;
     void clear_field() override;
     void show_field() override;

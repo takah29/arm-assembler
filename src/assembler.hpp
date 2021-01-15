@@ -71,7 +71,7 @@ class Assembler {
     Assembler(std::vector<std::string> assemblies, bool debug_flag);
     ~Assembler();
 
-    uint32_t convert(std::string asmcode);
+    uint32_t convert(std::string asmcode, int current_line_num=-1);
     std::vector<uint32_t> convert_all();
 };
 

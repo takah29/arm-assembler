@@ -19,7 +19,7 @@ class Field {
     Field(OpcodeInfo *opcode_info_ptr);
     virtual ~Field();
 
-    virtual void input(std::vector<std::string> asmcode_v) = 0;
+    virtual void input(std::vector<std::string> asmcode_v, int current_line_num=-1) = 0;
     virtual uint32_t output() = 0;
     virtual void clear_field() = 0;
     virtual void show_field() = 0;

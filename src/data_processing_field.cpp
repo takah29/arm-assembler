@@ -128,7 +128,7 @@ uint32_t DataProcessingField::encode_imm32(const uint32_t imm32) const {
     throw std::runtime_error("cannot encode the immediate.");
 }
 
-void DataProcessingField::input(std::vector<std::string> asmcode_v) {
+void DataProcessingField::input(std::vector<std::string> asmcode_v, [[maybe_unused]] int current_line_num) {
     auto opcode = asmcode_v[0];
     std::vector<std::string> operands(asmcode_v.begin() + 1, asmcode_v.end());
     cond = get_cond_4bit(opcode);
