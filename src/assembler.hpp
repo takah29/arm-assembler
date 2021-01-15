@@ -64,7 +64,7 @@ class Assembler {
     std::vector<std::string> tokenize(std::string asmcode);
     std::vector<std::string> split_operands(const std::string operandes, const size_t n_operands);
     std::tuple<std::string, std::string> split_opcode(std::string opcode);
-    void set_label(const std::string asm_code, int line_num);
+    void set_label(std::string asmcode, int line_num);
 
    public:
     Assembler(bool debug_flag = false);

@@ -213,10 +213,12 @@ std::vector<std::string> Assembler::split_operands(const std::string operands, c
     return result;
 }
 
-void Assembler::set_label(const std::string asmcode, int num) {
+void Assembler::set_label(std::string asmcode, int num) {
+    std::transform(asmcode.begin(), asmcode.end(), asmcode.begin(), ::tolower);
+
     auto pos = asmcode.find_first_of(' ');
     auto token = asmcode.substr(0, pos);
-    if (opcode_info.find(token) != opcode_info.end()) {
+    if (opcode_info.find(token) == opcode_info.end()) {
         label_info[token] = num;
     }
 }
