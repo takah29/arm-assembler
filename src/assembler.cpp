@@ -21,6 +21,7 @@ Assembler::Assembler(bool debug_flag) : debug_flag(debug_flag) {
 
 Assembler::Assembler(std::vector<std::string> assemblies, bool debug_flag)
     : assemblies(assemblies), debug_flag(debug_flag) {
+    normalize(assemblies);
     initialize();
     build_label_info(assemblies);
     set_fields();
@@ -34,6 +35,7 @@ Assembler::~Assembler() {
 }
 
 uint32_t Assembler::convert(std::string asmcode, int current_line_num) {
+    asmcode = unit_space(strip(asmcode));
     std::transform(asmcode.begin(), asmcode.end(), asmcode.begin(), ::tolower);
     auto tokens = tokenize(asmcode);
 
@@ -227,4 +229,9 @@ void Assembler::set_label(std::string asmcode, int num) {
     if (opcode_info.find(token) == opcode_info.end()) {
         label_info[token] = num;
     }
+}
+
+void Assembler::normalize(std::vector<std::string> &assemblies) {
+    auto f = [](std::string x) { return unit_space(strip(x)); };
+    transform(assemblies.begin(), assemblies.end(), assemblies.begin(), f);
 }

@@ -66,13 +66,14 @@ class Assembler {
     std::vector<std::string> split_operands(const std::string operandes, const size_t n_operands);
     std::tuple<std::string, std::string> split_opcode(std::string opcode);
     void set_label(std::string asmcode, int line_num);
+    void normalize(std::vector<std::string> &assemblies);
 
    public:
     Assembler(bool debug_flag = false);
     Assembler(std::vector<std::string> assemblies, bool debug_flag);
     ~Assembler();
 
-    uint32_t convert(std::string asmcode, int current_line_num=-1);
+    uint32_t convert(std::string asmcode, int current_line_num = -1);
     std::vector<uint32_t> convert_all();
 };
 

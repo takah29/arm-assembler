@@ -20,25 +20,16 @@ int main(int argc, char **argv) {
 
     string asmfile_path = args[1];
     bool debug_flag = (argc == 3 and args[2] == "-d") ? true : false;
-    ifstream infile(asmfile_path);
+    auto assemblies = loadtxt(asmfile_path);
 
-    if (infile.fail()) {
-        printf("Error: Failed to open assembly file.\n");
-        return 1;
-    }
+    Assembler assembler{assemblies, debug_flag};
+    auto result = assembler.convert_all();
 
-    Assembler assembler{};
-    string asmcode;
-    while (getline(infile, asmcode)) {
-        asmcode = unit_space(strip(asmcode));
-        if (asmcode == "" or asmcode.substr(0, 2) == "//") {
-            continue;
-        }
-        auto machine_code = assembler.convert(asmcode);
-        if (debug_flag) {
-            cout << asmcode << " -> ";
-        }
-        cout << bitset<32>(machine_code) << endl;
+    ofstream outfile("output.txt");
+    for (auto &x : result) {
+        outfile << bitset<32>(x) << endl;
     }
+    outfile.close();
+
     return 0;
 }
