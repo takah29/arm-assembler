@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
         if (asmcode == "" or asmcode.substr(0, 2) == "//") {
             continue;
         }
-        auto machine_code = assembler.convert(asmcode, debug_flag);
+        auto machine_code = assembler.convert(asmcode);
         if (debug_flag) {
             cout << asmcode << " -> ";
         }

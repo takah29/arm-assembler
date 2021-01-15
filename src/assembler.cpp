@@ -13,7 +13,71 @@
 #include "multiplication_field.hpp"
 #include "utility.hpp"
 
-Assembler::Assembler() {
+Assembler::Assembler(bool debug_flag) : debug_flag(debug_flag) { initialize(); }
+
+Assembler::Assembler(std::vector<std::string> assemblies, bool debug_flag)
+    : assemblies(assemblies), debug_flag(debug_flag) {
+    build_label_info(assemblies);
+    initialize();
+}
+
+Assembler::~Assembler() {
+    delete fields[0];
+    delete fields[1];
+    delete fields[2];
+    delete fields[3];
+}
+
+uint32_t Assembler::convert(std::string asmcode) {
+    std::transform(asmcode.begin(), asmcode.end(), asmcode.begin(), ::tolower);
+    auto tokens = tokenize(asmcode);
+
+    std::string opcode = tokens[0];
+    if (opcode.size() == 0 or 5 < opcode.size()) {
+        throw std::runtime_error("Invalied opecode length.");
+    }
+
+    auto ftype = opcode_info.at(opcode).at("ftype");
+    auto num = [&]() {
+        int n;
+        if (1 <= ftype and ftype <= 4) {
+            n = 0;
+        } else if (5 <= ftype and ftype <= 6) {
+            n = 1;
+        } else if (ftype == 7) {
+            n = 2;
+        } else if (ftype == 8) {
+            n = 3;
+        } else {
+            n = -1;
+        }
+        return n;
+    }();
+
+    uint32_t machine_code = 0;
+    if (0 <= num and num < 4) {
+        fields[num]->input(tokens);
+        if (debug_flag) {
+            fields[num]->show_field();
+        }
+        machine_code = fields[num]->output();
+    } else {
+        throw std::runtime_error("unsupported format type.");
+    }
+
+    return machine_code;
+}
+
+std::vector<uint32_t> Assembler::convert_all() {
+    std::vector<uint32_t> result;
+    for (auto &asmcode : assemblies) {
+        result.emplace_back(convert(asmcode));
+    }
+
+    return result;
+}
+
+void Assembler::initialize() {
     // 命令ニモニックと条件ニモニックの定義からオペコード情報を定義
     for (auto &x : opcodebase_info) {
         auto ftype = x.second.at("ftype");
@@ -57,53 +121,26 @@ Assembler::Assembler() {
     fields[0] = new DataProcessingField(&opcode_info);
     fields[1] = new MultiplicationField(&opcode_info);
     fields[2] = new MemoryField(&opcode_info);
-    fields[3] = new BranchField(&opcode_info);
+    fields[3] = new BranchField(&opcode_info, &label_info);
 }
 
-Assembler::~Assembler() {
-    delete fields[0];
-    delete fields[1];
-    delete fields[2];
-    delete fields[3];
-}
-
-uint32_t Assembler::convert(std::string asmcode) {
-    std::transform(asmcode.begin(), asmcode.end(), asmcode.begin(), ::tolower);
-    auto tokens = tokenize(asmcode);
-
-    std::string opcode = tokens[0];
-    if (opcode.size() == 0 or 5 < opcode.size()) {
-        throw std::runtime_error("Invalied opecode length.");
+void Assembler::build_label_info(const std::vector<std::string> assemblies) {
+    for (size_t num = 0; num < assemblies.size(); num++) {
+        set_label(assemblies[num], num);
     }
-
-    uint32_t machine_code = 0;
-    auto ftype = opcode_info.at(opcode).at("ftype");
-    if (1 <= ftype and ftype <= 4) {
-        fields[0]->input(tokens);
-        fields[0]->show_field();
-        machine_code = fields[0]->output();
-    } else if (5 <= ftype and ftype <= 6) {
-        fields[1]->input(tokens);
-        fields[1]->show_field();
-        machine_code = fields[1]->output();
-    } else if (ftype == 7) {
-        fields[2]->input(tokens);
-        fields[2]->show_field();
-        machine_code = fields[2]->output();
-    } else if (ftype == 8) {
-        fields[3]->input(tokens);
-        fields[3]->show_field();
-        machine_code = fields[3]->output();
-    } else {
-        throw std::runtime_error("unsupported format type.");
-    }
-
-    return machine_code;
 }
 
-std::vector<std::string> Assembler::tokenize(const std::string asmcode) {
+std::vector<std::string> Assembler::tokenize(std::string asmcode) {
     auto pos = asmcode.find_first_of(' ');
-    auto opcode = asmcode.substr(0, pos);
+    auto token = asmcode.substr(0, pos);
+    std::string opcode;
+    if (opcode_info.find(token) == opcode_info.end()) {
+        asmcode = asmcode.substr(pos + 1);
+        pos = asmcode.find_first_of(' ');
+        opcode = asmcode.substr(0, pos);
+    } else {
+        opcode = token;
+    }
     auto operands = asmcode.substr(pos + 1);
     std::vector<std::string> tokens{opcode};
 
@@ -171,4 +208,12 @@ std::vector<std::string> Assembler::split_operands(const std::string operands, c
     }
 
     return result;
+}
+
+void Assembler::set_label(const std::string asmcode, int num) {
+    auto pos = asmcode.find_first_of(' ');
+    auto token = asmcode.substr(0, pos);
+    if (opcode_info.find(token) != opcode_info.end()) {
+        label_info[token] = num;
+    }
 }

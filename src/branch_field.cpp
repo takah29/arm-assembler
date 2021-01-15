@@ -3,7 +3,7 @@
 #include <bitset>
 #include <iostream>
 
-BranchField::BranchField(OpcodeInfo *opcode_info) : Field(opcode_info), cond(0), op(0), funct(0), imm24(0) {}
+BranchField::BranchField(OpcodeInfo *opcode_info, LabelInfo *label_info) : Field(opcode_info), label_info(label_info), cond(0), op(0), funct(0), imm24(0) {}
 BranchField::~BranchField() {}
 
 uint32_t BranchField::get_lflag_1bit(const std::string opcode) const { return opcode_info->at(opcode).at("L"); }

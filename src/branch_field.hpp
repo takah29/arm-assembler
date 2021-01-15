@@ -8,6 +8,8 @@
 #include "types.hpp"
 
 class BranchField : public Field {
+    LabelInfo *label_info;
+
     uint32_t cond;   // 4bit
     uint32_t op;     // 2bit
     uint32_t funct;  // 2bit
@@ -17,7 +19,7 @@ class BranchField : public Field {
     uint32_t get_funct_2bit(const std::string opcode) const;
 
    public:
-    BranchField(OpcodeInfo *opcode_info);
+    BranchField(OpcodeInfo *opcode_info, LabelInfo *label_info);
     ~BranchField();
 
     void input(std::vector<std::string> asmcode_v) override;

@@ -14,5 +14,6 @@ using std::int64_t;
 using std::uint64_t;
 
 using OpcodeInfo = std::unordered_map<std::string, std::unordered_map<std::string, uint32_t>>;
+using LabelInfo = std::unordered_map<std::string, int>;
 
 #endif

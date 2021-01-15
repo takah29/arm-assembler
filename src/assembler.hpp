@@ -47,23 +47,32 @@ class Assembler {
                                                    {"ldrsh", {{"ftype", 7}, {"op", 0b00}, {"op2", 0b11}, {"L", 0b1}}},
                                                    {"b", {{"ftype", 8}, {"op", 0b10}, {"L", 0b0}}},
                                                    {"bl", {{"ftype", 8}, {"op", 0b10}, {"L", 0b1}}}};
+
     inline static const std::unordered_map<std::string, uint32_t> cond_info{
         {"eq", 0b0000}, {"ne", 0b0001}, {"cs", 0b0010}, {"hs", 0b0010}, {"cc", 0b0011}, {"lo", 0b0011},
         {"mi", 0b0100}, {"pl", 0b0101}, {"vs", 0b0110}, {"vc", 0b0111}, {"hi", 0b1000}, {"ls", 0b1001},
         {"ge", 0b1010}, {"lt", 0b1011}, {"gt", 0b1100}, {"le", 0b1101}, {"al", 0b1110}};
+
     OpcodeInfo opcode_info;
-
     std::array<Field *, 4> fields;
+    std::vector<std::string> assemblies;
+    LabelInfo label_info;
+    bool debug_flag;
 
-    std::vector<std::string> tokenize(const std::string asmcode);
+    void initialize();
+    void build_label_info(const std::vector<std::string> assemblies);
+    std::vector<std::string> tokenize(std::string asmcode);
     std::vector<std::string> split_operands(const std::string operandes, const size_t n_operands);
     std::tuple<std::string, std::string> split_opcode(std::string opcode);
+    void set_label(const std::string asm_code, int line_num);
 
    public:
-    Assembler();
+    Assembler(bool debug_flag = false);
+    Assembler(std::vector<std::string> assemblies, bool debug_flag);
     ~Assembler();
 
     uint32_t convert(std::string asmcode);
+    std::vector<uint32_t> convert_all();
 };
 
 #endif
