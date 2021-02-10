@@ -1,2 +1,7 @@
-assembler/assembler
 *.o
+.vscode
+assembler
+output.txt
+run_all_test
+
+
