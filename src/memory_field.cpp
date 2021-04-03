@@ -68,7 +68,7 @@ uint32_t MemoryField::get_funct_6bit(const std::string opcode, const std::string
     // Get iber and u flags
     auto adr_operands = adr_to_operands(adr);
     uint32_t iber = 0, u = 0;
-    if (adr_operands.size() == 2) {  // case: [rn, +-src2]
+    if (adr_operands.size() == 2 or adr_operands.size() == 4) {  // case: [rn, +-src2]
         auto operand_src2 = adr_operands[1];
         iber = (~get_iflag_1bit(operand_src2)) & 0x00000001;
         u = get_uflag_1bit(operand_src2);
@@ -76,21 +76,21 @@ uint32_t MemoryField::get_funct_6bit(const std::string opcode, const std::string
         iber = 0b0;
         u = 0b1;
     } else {
-        throw std::runtime_error("unsupported description.");
+        throw std::runtime_error("Wrong number of arguments.");
     }
 
     return l | (w << 1) | (b << 2) | (u << 3) | (p << 4) | (iber << 5);
 }
 
 uint32_t MemoryField::get_funct_6bit_ext(const std::string opcode, const std::string adr) const {
-    // Get B and L flags
+    // Get L flags
     auto l = get_lflag_1bit(opcode);
     auto [p, w] = get_pwflag(adr);
 
     // Get i and u flags
     auto adr_operands = adr_to_operands(adr);
     uint32_t i = 0, u = 0;
-    if (adr_operands.size() == 2) {  // case: [rn, +-src2]
+    if (adr_operands.size() == 2 or adr_operands.size() == 4) {  // case: [rn, +-src2]
         auto operand_src2 = adr_operands[1];
         i = get_iflag_1bit(operand_src2);
         u = get_uflag_1bit(operand_src2);
@@ -98,7 +98,7 @@ uint32_t MemoryField::get_funct_6bit_ext(const std::string opcode, const std::st
         i = 0b1;
         u = 0b1;
     } else {
-        throw std::runtime_error("unsupported description.");
+        throw std::runtime_error("Wrong number of arguments.");
     }
 
     return l | (w << 1) | (i << 2) | (u << 3) | (p << 4);
@@ -106,14 +106,15 @@ uint32_t MemoryField::get_funct_6bit_ext(const std::string opcode, const std::st
 
 uint32_t MemoryField::get_src2_12bit_imm(const std::string operand_src2) const { return to_imm(operand_src2, 12); }
 
-uint32_t MemoryField::get_src2_12bit_reg(const std::string operand_src2) const {
+uint32_t MemoryField::get_src2_12bit_reg(const std::string adr) const {
     // Shift operator is not supported, so shamt5 and sh fields are 0
     uint32_t src2 = 0;
-
-    if (operand_src2[0] == '-') {  // case sub: src2 = -r<num>
-        src2 = get_reg_4bit(operand_src2.substr(1));
+    auto adr_operands = adr_to_operands(adr);
+    auto src2_str = join(std::vector<std::string>(adr_operands.begin() + 1, adr_operands.end()), " ");
+    if (src2_str[0] == '-') {  // case sub: src2 = -r<num>
+        src2 = get_src2_12bit_reg_shift(src2_str.substr(1));
     } else {  // case add: src2 = r<num>
-        src2 = get_reg_4bit(operand_src2);
+        src2 = get_src2_12bit_reg_shift(src2_str);
     }
 
     return src2;
@@ -175,7 +176,7 @@ uint32_t MemoryField::to_imm(std::string operand_src2, int n_bit) const {
 
 std::vector<std::string> MemoryField::adr_to_operands(const std::string adr) const {
     auto operands_str = std::regex_replace(adr, std::regex(R"(\[|\]|!)"), "");
-    return split_reg(operands_str, ", ");
+    return split_reg(operands_str, ", | ");
 }
 
 void MemoryField::input(std::vector<std::string> asmcode_v, [[maybe_unused]] int current_line_num) {
@@ -196,7 +197,7 @@ void MemoryField::input(std::vector<std::string> asmcode_v, [[maybe_unused]] int
             if (funct >> 5 == 0) {  //  immediate: iberflag = 1
                 src2 = (adr_operands.size() == 2) ? get_src2_12bit_imm(adr_operands[1]) : 0b0;
             } else {  // register: iberflag = 0
-                src2 = get_src2_12bit_reg(adr_operands[1]);
+                src2 = get_src2_12bit_reg(operands.back());
             }
         } else if (op == 0b00) {  // extended memory instruction
             funct = get_funct_6bit_ext(opcode, operands.back());

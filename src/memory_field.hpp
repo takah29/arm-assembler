@@ -25,7 +25,7 @@ class MemoryField : public Field {
 
     uint32_t get_op2_2bit(const std::string opcode) const;
     uint32_t get_src2_12bit_imm(const std::string operand_src2) const;
-    uint32_t get_src2_12bit_reg(const std::string operand_src2) const;
+    uint32_t get_src2_12bit_reg(const std::string adr) const;
     uint32_t get_src2_12bit_imm_ext(const std::string opcode, const std::string operand_src2) const;
     uint32_t get_src2_12bit_reg_ext(const std::string opcode, const std::string operand_src2) const;
 
