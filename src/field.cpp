@@ -61,7 +61,7 @@ uint32_t Field::get_src2_12bit_reg_shift(const std::string src2) const {
         return rm | (0b0 << 4) | (sh << 5) | (shamt5 << 7);
     } else if (is_register_str(src2_split[2])) {
         uint32_t rs = get_reg_4bit(src2_split[2]);
-        return rm | (0b1 << 4) | (sh << 5) | (0b1 << 7) | (rs << 8);
+        return rm | (0b1 << 4) | (sh << 5) | (0b0 << 7) | (rs << 8);
     } else {
         throw std::runtime_error("unsupported description.");
     }
