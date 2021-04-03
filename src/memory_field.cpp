@@ -15,7 +15,7 @@ uint32_t MemoryField::get_iflag_1bit(const std::string operand_src2) const {
     uint32_t ret = 0;
     if (operand_src2[0] == '#') {
         ret = 0b1;
-    } else if (operand_src2[0] == 'r' or operand_src2[1] == 'r') {
+    } else if (is_register_str(operand_src2) or is_register_str(operand_src2.substr(1))) {
         ret = 0b0;
     } else {
         throw std::runtime_error("unsupported description.");
@@ -27,7 +27,7 @@ uint32_t MemoryField::get_uflag_1bit(const std::string operand_src2) const {
     uint32_t ret = 0;
     if (operand_src2[0] == '-' or operand_src2[1] == '-') {  // minus case: src2 = "-r<reg_num>" or "#-<num>"
         ret = 0b0;
-    } else if (operand_src2[0] == '#' or operand_src2[0] == 'r') {  // plus case: src2 = "#<num>" or "r<reg_num>"
+    } else if (operand_src2[0] == '#' or is_register_str(operand_src2)) {  // plus case: src2 = "#<num>" or "r<reg_num>"
         ret = 0b1;
     } else {
         throw std::runtime_error("unsupported description.");
@@ -107,7 +107,6 @@ uint32_t MemoryField::get_funct_6bit_ext(const std::string opcode, const std::st
 uint32_t MemoryField::get_src2_12bit_imm(const std::string operand_src2) const { return to_imm(operand_src2, 12); }
 
 uint32_t MemoryField::get_src2_12bit_reg(const std::string adr) const {
-    // Shift operator is not supported, so shamt5 and sh fields are 0
     uint32_t src2 = 0;
     auto adr_operands = adr_to_operands(adr);
     auto src2_str = join(std::vector<std::string>(adr_operands.begin() + 1, adr_operands.end()), " ");
@@ -137,8 +136,6 @@ uint32_t MemoryField::get_src2_12bit_imm_ext(const std::string opcode, const std
 
 uint32_t MemoryField::get_src2_12bit_reg_ext(const std::string opcode, const std::string operand_src2) const {
     uint32_t op2 = get_op2_2bit(opcode);
-
-    // Shift operator is not supported, so shamt5 and sh fields are 0
     uint32_t rm = 0;
     if (operand_src2[0] == '-') {  // case sub: src2 = -r<num>
         rm = get_reg_4bit(operand_src2.substr(1));
