@@ -71,6 +71,7 @@ std::vector<std::tuple<T, S>> zip(std::vector<T> container1, std::vector<S> cont
 }
 
 std::string strip(const std::string& string);
+std::string join(std::vector<std::string> str_vec, std::string space);
 std::string unit_space(const std::string s);
 std::vector<size_t> find_all(const std::string str, const std::string substr);
 std::vector<std::string> split_reg(const std::string& s, const std::string regex_delim);

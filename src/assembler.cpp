@@ -40,7 +40,7 @@ uint32_t Assembler::convert(std::string asmcode, int current_line_num) {
     auto tokens = tokenize(asmcode);
 
     std::string opcode = tokens[0];
-    if (opcode.size() == 0 or 5 < opcode.size()) {
+    if (opcode.size() == 0 or 6 < opcode.size()) {
         throw std::runtime_error("Invalied opecode length.");
     }
 
@@ -88,29 +88,29 @@ std::vector<uint32_t> Assembler::convert_all() {
 
 void Assembler::initialize() {
     // 命令ニモニックと条件ニモニックの定義からオペコード情報を定義
-    for (auto &x : opcodebase_info) {
-        auto ftype = x.second.at("ftype");
+    for (auto &opbase_item : opcodebase_info) {
+        auto ftype = opbase_item.second.at("ftype");
         // 基本命令の登録
-        opcode_info[x.first] = x.second;
-        opcode_info[x.first]["cond"] = cond_info.at("al");
+        opcode_info[opbase_item.first] = opbase_item.second;
+        opcode_info[opbase_item.first]["cond"] = cond_info.at("al");
 
         if (ftype == 2) {
             // TST, TEQ, CMP, CMNは無条件にS = 1
-            opcode_info[x.first]["S"] = 0b1;
+            opcode_info[opbase_item.first]["S"] = 0b1;
         } else if (1 <= ftype and ftype <= 6) {
-            opcode_info[x.first]["S"] = 0b0;
+            opcode_info[opbase_item.first]["S"] = 0b0;
 
             // 基本命令のS命令を登録
-            opcode_info[x.first + 's'] = x.second;
-            opcode_info[x.first + 's']["cond"] = cond_info.at("al");
-            opcode_info[x.first + 's']["S"] = 0b1;
+            opcode_info[opbase_item.first + 's'] = opbase_item.second;
+            opcode_info[opbase_item.first + 's']["cond"] = cond_info.at("al");
+            opcode_info[opbase_item.first + 's']["S"] = 0b1;
         }
 
-        for (auto &y : cond_info) {
+        for (auto &cond_item : cond_info) {
             // 条件命令の登録
-            auto opcode_ex = x.first + y.first;
-            opcode_info[opcode_ex] = x.second;
-            opcode_info[opcode_ex]["cond"] = y.second;
+            auto opcode_ex = opbase_item.first + cond_item.first;
+            opcode_info[opcode_ex] = opbase_item.second;
+            opcode_info[opcode_ex]["cond"] = cond_item.second;
 
             if (ftype == 2) {
                 // TST, TEQ, CMP, CMNは無条件にS = 1
@@ -119,8 +119,8 @@ void Assembler::initialize() {
                 opcode_info[opcode_ex]["S"] = 0b0;
 
                 // 条件命令のS命令を登録
-                opcode_info[opcode_ex + 's'] = x.second;
-                opcode_info[opcode_ex + 's']["cond"] = cond_info.at("al");
+                opcode_info[opcode_ex + 's'] = opbase_item.second;
+                opcode_info[opcode_ex + 's']["cond"] = cond_item.second;
                 opcode_info[opcode_ex + 's']["S"] = 0b1;
             }
         }

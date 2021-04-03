@@ -67,6 +67,16 @@ std::string replace_all(const std::string str, const std::string from_str, const
     return tmp_str;
 }
 
+std::string join(std::vector<std::string> str_vec, std::string space) {
+    std::string result = str_vec[0];
+    if (str_vec.size() < 2) return result;
+
+    for (size_t i = 1; i < str_vec.size(); i++) {
+        result += space + str_vec[i];
+    }
+    return result;
+}
+
 std::vector<std::string> loadtxt(std::string filepath) {
     std::vector<std::string> result{};
     std::string line;

@@ -19,9 +19,13 @@ uint32_t DataProcessingField::get_iflag_1bit(const std::string opcode, const std
     return ret;
 }
 
-uint32_t DataProcessingField::get_sflag_1bit(const std::string opcode) const { return opcode_info_ptr->at(opcode).at("S"); }
+uint32_t DataProcessingField::get_sflag_1bit(const std::string opcode) const {
+    return opcode_info_ptr->at(opcode).at("S");
+}
 
-uint32_t DataProcessingField::get_cmd_4bit(const std::string opcode) const { return opcode_info_ptr->at(opcode).at("cmd"); }
+uint32_t DataProcessingField::get_cmd_4bit(const std::string opcode) const {
+    return opcode_info_ptr->at(opcode).at("cmd");
+}
 
 uint32_t DataProcessingField::get_funct_6bit(const std::string opcode, const std::string src2) const {
     auto iflag = get_iflag_1bit(opcode, src2);
@@ -89,8 +93,8 @@ uint32_t DataProcessingField::get_src2_12bit_type123(const std::vector<std::stri
     auto src2 = operands.back();
     if (src2[0] == '#') {
         ret = get_src2_12bit_imm(src2);
-    } else if (src2[0] == 'r') {
-        ret = get_reg_4bit(src2);
+    } else if (is_register_str(src2)) {
+        ret = get_src2_12bit_reg_shift(src2);
     } else {
         throw std::runtime_error("unsupported description.");
     }
@@ -103,7 +107,7 @@ uint32_t DataProcessingField::get_src2_12bit_type4(const std::string opcode,
     auto src2 = operands.back();
     if (src2[0] == '#') {
         ret = get_src2_12bit_shimm(opcode, operands);
-    } else if (src2[0] == 'r') {
+    } else if (is_register_str(src2)) {
         ret = get_src2_12bit_shreg(opcode, operands);
     } else {
         throw std::runtime_error("unsupported description.");

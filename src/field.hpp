@@ -10,16 +10,18 @@ class Field {
    protected:
     OpcodeInfo *opcode_info_ptr;
 
+    bool is_register_str(const std::string s) const;
     uint32_t get_reg_4bit(const std::string reg) const;
     uint32_t get_cond_4bit(const std::string opcode) const;
     uint32_t get_ftype(const std::string opcode) const;
     uint32_t get_op_2bit(const std::string opcode) const;
+    uint32_t get_src2_12bit_reg_shift(const std::string src2) const;
 
    public:
     Field(OpcodeInfo *opcode_info_ptr);
     virtual ~Field();
 
-    virtual void input(std::vector<std::string> asmcode_v, int current_line_num=-1) = 0;
+    virtual void input(std::vector<std::string> asmcode_v, int current_line_num = -1) = 0;
     virtual uint32_t output() = 0;
     virtual void clear_field() = 0;
     virtual void show_field() = 0;
